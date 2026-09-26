@@ -3249,6 +3249,10 @@ PrefabInstance:
       value: NavigationTabCell-Locked
       objectReference: {fileID: 0}
     - target: {fileID: 1991366760202118458, guid: bcc313056f92c384d80ce14420f56ae9, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1991366760202118458, guid: bcc313056f92c384d80ce14420f56ae9, type: 3}
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 3185315024715838356}
