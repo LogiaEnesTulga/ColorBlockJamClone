@@ -1,0 +1,22 @@
+{
+    "name": "RollicGames.ColorBlockJamClone.Root.Runtime.Injection",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:1a624a69be6263a215c402159bd2e3b6",
+        "GUID:4b57dacaf645a2042b8b9a312fa559ae",
+        "GUID:4758c148417633f18bf332af58be854f",
+        "GUID:07b33554ee09d898393f745852355b37",
+        "GUID:9c7f3fff7b70f1efaf0511d632abe62b",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

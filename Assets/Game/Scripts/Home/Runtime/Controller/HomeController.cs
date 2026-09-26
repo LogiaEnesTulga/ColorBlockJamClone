@@ -1,6 +1,7 @@
 using System;
 using RollicGames.ColorBlockJamClone.Home.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Home.Runtime.View;
+using RollicGames.ColorBlockJamClone.Player.Runtime.Controller;
 using Zenject;
 
 namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
@@ -9,6 +10,7 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
     {
         [Inject] private readonly HomeModel _homeModel;
         [Inject] private readonly IHomeView _homeView;
+        [Inject] private readonly IPlayerController _playerController;
 
         public void Initialize()
         {
@@ -23,8 +25,8 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
             // TODO Get Level and Coin from player inventory!
             var viewData = new HomeViewData()
             {
-                PlayerLevel = 15,
-                PlayerCoinAmount = 5000,
+                PlayerLevel = _playerController.GetLevel(),
+                PlayerCoinAmount = _playerController.GetCoin(),
 
                 StartingTab = HomeNavigationType.Home,
             };
