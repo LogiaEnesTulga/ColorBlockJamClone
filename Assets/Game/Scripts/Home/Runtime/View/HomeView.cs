@@ -1,5 +1,6 @@
 using System;
 using RollicGames.ColorBlockJamClone.Home.Runtime.Model;
+using RollicGames.UI.Runtime.View;
 using UnityEngine;
 using TMPro;
 
@@ -26,11 +27,15 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.View
         {
             _navigationView.InitializeView(OnNavigationClicked);
 
-            // TODO : Format Coin Text
-            _coinText.SetText(viewData.PlayerCoinAmount.ToString());
+            SetCoinText(viewData.PlayerCoinAmount);
             _levelText.SetText($"Level {viewData.PlayerLevel}");
 
             _navigationView.NavigateTo(viewData.StartingTab, animate: false);
+        }
+
+        private void SetCoinText(int amount)
+        {
+            _coinText.SetText(TextFormat.FormatCoinAmount(amount));
         }
 
         public void NavigateTo(HomeNavigationType to, HomeNavigationType from = HomeNavigationType.None, bool animate = true)
