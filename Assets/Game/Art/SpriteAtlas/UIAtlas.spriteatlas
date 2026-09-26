@@ -1,0 +1,196 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UIAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 4
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 80a30ef0cde09ea4d95cb699596d9d80, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 93d31810c9cc3634cad4a5a93821e5a5: 21300000
+    - 3c696140f5d41bd419a98d2be129e180: 21300000
+    - 0201f140eca36a24187988208057d7ba: 21300000
+    - bf0ed4400f4abdb40bab9c30dcadd56e: 21300000
+    - 5bcd0c40643d6a845acfd9e0de171d49: 21300000
+    - 33d1ab6052a79a6438e90ca76fd75b1b: 21300000
+    - 3b428270ebd61064b90c6d10fb2c12d4: 21300000
+    - 4242a7f0c2474b240a054b9c27ffcdb9: 21300000
+    - da4c8101bafea344ca3eaf5705a6b7a3: 21300000
+    - 2c1c9b51e767b7f4b818868661486889: 21300000
+    - 015e1e5171181934da4fe294b06040a7: 21300000
+    - c12934125a3bf504dad7f8d54a82d53f: 21300000
+    - e2660932ace49ab4a8bd6804b70b1a53: 21300000
+    - 59042192d0dc84e4196e8ba8dcf1b38b: 21300000
+    - effe7da27c84b894fa44b0009e0352d8: 21300000
+    - 311605031eb1cb14ebfae504e66322c4: 21300000
+    - f157bd33d466b684c9915ec3d161291a: 21300000
+    - 6a5456539b07ae745af7b4fe54067334: 21300000
+    - d055ac83137d98e44973091cb0b644a8: 21300000
+    - 9ca07ae4b8845664bb468625f6d6b316: 21300000
+    - e81535f4e1d1cbb44aa5529beac91257: 21300000
+    - eb7248f5aaea92749861b6400ede6812: 21300000
+    - c4350b362e2094342ba9707728b6a8b8: 21300000
+    - 4c6c8756a615390409b4c1cb33765d1b: 21300000
+    - ff60c396fad00cf4ba63c416d07cd63f: 21300000
+    - 30249927921c7bc4ebff16a99411781f: 21300000
+    - e6b43677a918ca543ae5dcb2becc41e2: 21300000
+    - 368523a7b7f5a724db2a8d16004ead76: 21300000
+    - 9a8681d7dc59a4046b82971b1f41e87e: 21300000
+    - 82361108dbb73194d822e0007efd9f38: 21300000
+    - 4ef41f58d31a3bb40a5f12646d3ace85: 21300000
+    - 3a725c2967b670848a53384f72a36ceb: 21300000
+    - 1b2b522a9ac47a24ea559e43a2ef8edc: 21300000
+    - c1baf16af23e15e43845c5745b157755: 21300000
+    - 9e3b5d0bb05ea4c4f91e0e620090de68: 21300000
+    - b4e8fe5b610923c4fb69e382f74f4c67: 21300000
+    - 5744610c2a321e449b0a250720de39cb: 21300000
+    - 9991090cd5baf4343b3b755ac0931f0e: 21300000
+    - b5fa756cfd8bb1446bd724d44df20eac: 21300000
+    - a9fbed6ca3d9e7541b9770a0b31df1c3: 21300000
+    - fac81f8ce8583c949ba061579773d8c1: 21300000
+    - 93dd078da2bd244469adb82faf2afb35: 21300000
+    - 5835569d22a980140962de97248fea39: 21300000
+    - 76880fade8130124faef9fb798185ccc: 21300000
+    - fb23c32f050fac745b2ec7edb2684211: 21300000
+    - c589c56f3365c2841ac142fd665348eb: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 93d31810c9cc3634cad4a5a93821e5a5, type: 3}
+  - {fileID: 21300000, guid: 3c696140f5d41bd419a98d2be129e180, type: 3}
+  - {fileID: 21300000, guid: 0201f140eca36a24187988208057d7ba, type: 3}
+  - {fileID: 21300000, guid: bf0ed4400f4abdb40bab9c30dcadd56e, type: 3}
+  - {fileID: 21300000, guid: 5bcd0c40643d6a845acfd9e0de171d49, type: 3}
+  - {fileID: 21300000, guid: 33d1ab6052a79a6438e90ca76fd75b1b, type: 3}
+  - {fileID: 21300000, guid: 3b428270ebd61064b90c6d10fb2c12d4, type: 3}
+  - {fileID: 21300000, guid: 4242a7f0c2474b240a054b9c27ffcdb9, type: 3}
+  - {fileID: 21300000, guid: da4c8101bafea344ca3eaf5705a6b7a3, type: 3}
+  - {fileID: 21300000, guid: 2c1c9b51e767b7f4b818868661486889, type: 3}
+  - {fileID: 21300000, guid: 015e1e5171181934da4fe294b06040a7, type: 3}
+  - {fileID: 21300000, guid: c12934125a3bf504dad7f8d54a82d53f, type: 3}
+  - {fileID: 21300000, guid: e2660932ace49ab4a8bd6804b70b1a53, type: 3}
+  - {fileID: 21300000, guid: 59042192d0dc84e4196e8ba8dcf1b38b, type: 3}
+  - {fileID: 21300000, guid: effe7da27c84b894fa44b0009e0352d8, type: 3}
+  - {fileID: 21300000, guid: 311605031eb1cb14ebfae504e66322c4, type: 3}
+  - {fileID: 21300000, guid: f157bd33d466b684c9915ec3d161291a, type: 3}
+  - {fileID: 21300000, guid: 6a5456539b07ae745af7b4fe54067334, type: 3}
+  - {fileID: 21300000, guid: d055ac83137d98e44973091cb0b644a8, type: 3}
+  - {fileID: 21300000, guid: 9ca07ae4b8845664bb468625f6d6b316, type: 3}
+  - {fileID: 21300000, guid: e81535f4e1d1cbb44aa5529beac91257, type: 3}
+  - {fileID: 21300000, guid: eb7248f5aaea92749861b6400ede6812, type: 3}
+  - {fileID: 21300000, guid: c4350b362e2094342ba9707728b6a8b8, type: 3}
+  - {fileID: 21300000, guid: 4c6c8756a615390409b4c1cb33765d1b, type: 3}
+  - {fileID: 21300000, guid: ff60c396fad00cf4ba63c416d07cd63f, type: 3}
+  - {fileID: 21300000, guid: 30249927921c7bc4ebff16a99411781f, type: 3}
+  - {fileID: 21300000, guid: e6b43677a918ca543ae5dcb2becc41e2, type: 3}
+  - {fileID: 21300000, guid: 368523a7b7f5a724db2a8d16004ead76, type: 3}
+  - {fileID: 21300000, guid: 9a8681d7dc59a4046b82971b1f41e87e, type: 3}
+  - {fileID: 21300000, guid: 82361108dbb73194d822e0007efd9f38, type: 3}
+  - {fileID: 21300000, guid: 4ef41f58d31a3bb40a5f12646d3ace85, type: 3}
+  - {fileID: 21300000, guid: 3a725c2967b670848a53384f72a36ceb, type: 3}
+  - {fileID: 21300000, guid: 1b2b522a9ac47a24ea559e43a2ef8edc, type: 3}
+  - {fileID: 21300000, guid: c1baf16af23e15e43845c5745b157755, type: 3}
+  - {fileID: 21300000, guid: 9e3b5d0bb05ea4c4f91e0e620090de68, type: 3}
+  - {fileID: 21300000, guid: b4e8fe5b610923c4fb69e382f74f4c67, type: 3}
+  - {fileID: 21300000, guid: 5744610c2a321e449b0a250720de39cb, type: 3}
+  - {fileID: 21300000, guid: 9991090cd5baf4343b3b755ac0931f0e, type: 3}
+  - {fileID: 21300000, guid: b5fa756cfd8bb1446bd724d44df20eac, type: 3}
+  - {fileID: 21300000, guid: a9fbed6ca3d9e7541b9770a0b31df1c3, type: 3}
+  - {fileID: 21300000, guid: fac81f8ce8583c949ba061579773d8c1, type: 3}
+  - {fileID: 21300000, guid: 93dd078da2bd244469adb82faf2afb35, type: 3}
+  - {fileID: 21300000, guid: 5835569d22a980140962de97248fea39, type: 3}
+  - {fileID: 21300000, guid: 76880fade8130124faef9fb798185ccc, type: 3}
+  - {fileID: 21300000, guid: fb23c32f050fac745b2ec7edb2684211, type: 3}
+  - {fileID: 21300000, guid: c589c56f3365c2841ac142fd665348eb, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - lock
+  - Btn_circle_blue_small
+  - shop
+  - ActiveTab
+  - bg_popup_header
+  - Btn_popup_blue
+  - Rocket_Purple_Icon
+  - bg_gameplay_time_holder
+  - Heart
+  - Hammer
+  - bg_home_line
+  - Vacuum
+  - bg_popup_info_holder
+  - Blockjam_Settings_Sound
+  - Support_icon
+  - bg_home_resource_holder
+  - Btn_level_green
+  - bg_menu
+  - Btn_popup_green
+  - ic_pause
+  - bg_popup
+  - block_collection
+  - Settings_Icon
+  - ic_time
+  - Popup_Close_Button
+  - bg_home_coin_holder
+  - Btn_settings_normal
+  - Btn_circle_green_small
+  - Clock_Freeze
+  - SquareRoundedMask
+  - Btn_square_retry
+  - ic_restart
+  - Blockjam_Settings_Vibration
+  - bg_tile
+  - home_icon
+  - Blockjam_Settings_Music
+  - btn_toggle_on
+  - profile_box_blue
+  - Btn_booster_normal
+  - bg_popup_info_holder_2
+  - ic_plus
+  - Lego_Brickv1
+  - Clock
+  - leaderboard
+  - Coin_Single
+  - Btn_levelBg_normal
+  m_RenderDataMap: {}
+  m_Tag: UIAtlas
+  m_IsVariant: 0
