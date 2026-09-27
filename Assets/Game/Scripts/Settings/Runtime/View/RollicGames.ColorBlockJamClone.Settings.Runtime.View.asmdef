@@ -1,0 +1,16 @@
+{
+    "name": "RollicGames.ColorBlockJamClone.Settings.Runtime.View",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5e74b90e2aa099c41b15e101aeb7f46e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
