@@ -22,7 +22,6 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
         {
             _homeModel.ActiveTab = HomeNavigationType.Home;
 
-            // TODO Get Level and Coin from player inventory!
             var viewData = new HomeViewData()
             {
                 PlayerLevel = _playerController.GetLevel(),
