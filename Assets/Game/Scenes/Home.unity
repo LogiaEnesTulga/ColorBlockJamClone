@@ -682,7 +682,7 @@ GameObject:
   - component: {fileID: 674518080}
   - component: {fileID: 674518079}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: SettingsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1558,7 +1558,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _coinText: {fileID: 1273825256}
   _levelText: {fileID: 1532520980}
+  _settingsButton: {fileID: 674518079}
   _navigationView: {fileID: 277215080}
+  _popupParent: {fileID: 1127465916}
 --- !u!1 &1113299945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,7 +1571,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1113299946}
   m_Layer: 5
-  m_Name: SettingsButton
+  m_Name: SettingsButtonParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

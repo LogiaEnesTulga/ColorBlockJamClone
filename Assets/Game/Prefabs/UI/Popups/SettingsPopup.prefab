@@ -2713,6 +2713,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4994197096539509359, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 2704998088362970157}
     - target: {fileID: 7570094381379385345, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
       propertyPath: m_Name
       value: ToggleOption - Music
@@ -2727,6 +2731,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3066995467564874393, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
   m_PrefabInstance: {fileID: 3690986477296980236}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2704998088362970157 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1635670643661004065, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
+  m_PrefabInstance: {fileID: 3690986477296980236}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0db161960a7fa4298e317e0d236991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8048180229890825326 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6668113482408807778, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
@@ -2826,6 +2841,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4994197096539509359, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 3083851902432536642}
     - target: {fileID: 7570094381379385345, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
       propertyPath: m_Name
       value: ToggleOption - Haptics
@@ -2840,6 +2859,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3066995467564874393, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
   m_PrefabInstance: {fileID: 4359232924476093795}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3083851902432536642 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1635670643661004065, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
+  m_PrefabInstance: {fileID: 4359232924476093795}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0db161960a7fa4298e317e0d236991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6987052100080236545 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6668113482408807778, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
@@ -2943,6 +2973,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4994197096539509359, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 7726578907182891699}
     - target: {fileID: 7570094381379385345, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
       propertyPath: m_Name
       value: ToggleOption - Audio
@@ -2968,3 +3002,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3066995467564874393, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
   m_PrefabInstance: {fileID: 9045835393116364690}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7726578907182891699 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1635670643661004065, guid: 27e363ae2bf5f2f4ca0f56a1282172c5, type: 3}
+  m_PrefabInstance: {fileID: 9045835393116364690}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0db161960a7fa4298e317e0d236991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,3 +1,5 @@
+using System;
+
 namespace RollicGames.ColorBlockJamClone.Settings.Runtime.View
 {
     public struct GameSettingsPopupViewData
@@ -6,5 +8,24 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.View
         public readonly bool IsMusicOn;
         public readonly bool IsHapticsOn;
         public readonly bool IsOpenedFromGameplay;
+
+        public readonly Action OnAudioToggleClicked;
+        public readonly Action OnMusicToggleClicked;
+        public readonly Action OnHapticsToggleClicked;
+        public readonly Action OnDismissButtonClicked;
+
+        public GameSettingsPopupViewData(bool audio, bool music, bool haptics, bool fromGameplay,
+         Action audioAction, Action musicAction, Action hapticsAction, Action dismissAction)
+        {
+            IsAudioOn = audio;
+            IsMusicOn = music;
+            IsHapticsOn = haptics;
+            IsOpenedFromGameplay = fromGameplay;
+
+            OnAudioToggleClicked = audioAction;
+            OnMusicToggleClicked = musicAction;
+            OnHapticsToggleClicked = hapticsAction;
+            OnDismissButtonClicked = dismissAction;
+        }
     }
 }

@@ -2,6 +2,7 @@
     "name": "RollicGames.ColorBlockJamClone.Settings.Runtime.View",
     "rootNamespace": "",
     "references": [
+        "GUID:c1168b5ce740eeb4e88ca93c5cedfa49",
         "GUID:5e74b90e2aa099c41b15e101aeb7f46e"
     ],
     "includePlatforms": [],

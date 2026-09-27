@@ -1,13 +1,11 @@
 {
-    "name": "RollicGames.ColorBlockJamClone.Home.Runtime.Controller",
+    "name": "RollicGames.UI.Runtime.Presenter",
     "rootNamespace": "",
     "references": [
         "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:e0c2840f7847fcb4ebdf7e616fa817d9",
-        "GUID:2d70572ba3ed2ed4b868cb31fe733713",
-        "GUID:4b57dacaf645a2042b8b9a312fa559ae",
-        "GUID:922f2135b79f46d4799548a62899af86"
+        "GUID:5e74b90e2aa099c41b15e101aeb7f46e",
+        "GUID:617f1ffa7ba04be39013cfd996836e25"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -17,5 +15,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

@@ -9,7 +9,7 @@ namespace RollicGames.AddressableLoading.Runtime.View
 {
     public interface IAddressableLoader
     {
-        UniTask<GameObject> LoadPrefab(string addressableName);
+        UniTask<GameObject> LoadPrefab(string addressableName, Transform parent);
         void Release(GameObject instance);
     }
 
@@ -17,9 +17,9 @@ namespace RollicGames.AddressableLoading.Runtime.View
     {
         private readonly Dictionary<GameObject, AsyncOperationHandle<GameObject>> _loadedInstances = new();
 
-        public async UniTask<GameObject> LoadPrefab(string addressableName)
+        public async UniTask<GameObject> LoadPrefab(string addressableName, Transform parent)
         {
-            var handle = Addressables.InstantiateAsync(addressableName);
+            var handle = Addressables.InstantiateAsync(addressableName, parent: parent);
             var instance = await handle.ToUniTask();
 
             _loadedInstances[instance] = handle;
