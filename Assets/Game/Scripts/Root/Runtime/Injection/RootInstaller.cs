@@ -1,3 +1,4 @@
+using RollicGames.AddressableLoading.Runtime.View;
 using RollicGames.ColorBlockJamClone.Player.Runtime.Controller;
 using RollicGames.ColorBlockJamClone.Player.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Root.Runtime.Controller;
@@ -17,6 +18,7 @@ namespace RollicGames.ColorBlockJamClone.Root.Runtime.Injection
             Container.BindInterfacesTo<PlayerController>().AsSingle();
 
             Container.BindInterfacesTo<SceneLoadPresenter>().AsSingle();
+            Container.BindInterfacesTo<AddressableLoader>().AsSingle();
 
             Container.BindInterfacesTo<RootController>().AsSingle();
         }
