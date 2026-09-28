@@ -5,5 +5,6 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
         None = 0,
         Block = 1,
         Wall = 2,
+        Door = 3,
     }
 }

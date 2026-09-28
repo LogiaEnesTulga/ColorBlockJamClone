@@ -7,6 +7,6 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
         public int Width;
         public int Height;
 
-        public readonly List<List<LevelObjectModel>> Grid;
+        public readonly List<List<LevelObjectModel>> Grid = new List<List<LevelObjectModel>>();
     }
 }
