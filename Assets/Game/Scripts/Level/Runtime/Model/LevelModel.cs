@@ -4,5 +4,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
     {
         public bool IsLevelStarted = false;
         public bool IsLevelPaused = false;
+
+        public float RemainingDuration;
     }
 }
