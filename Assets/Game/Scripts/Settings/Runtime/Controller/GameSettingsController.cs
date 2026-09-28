@@ -8,7 +8,7 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.Controller
 {
     public interface IGameSettingsController
     {
-        UniTask OpenGameSettingsPopupAndWait(bool fromGameplay);
+        UniTask<SettingsPopupResult> OpenGameSettingsPopupAndWait(bool fromGameplay);
     }
 
     public class GameSettingsController : IGameSettingsController
@@ -18,13 +18,13 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.Controller
         [Inject] private readonly SettingsModel _settingsModel;
         [Inject] private readonly IPopupPresenter _popupPresenter;
 
-        private UniTaskCompletionSource _dismissTcs;
+        private UniTaskCompletionSource<SettingsPopupResult> _dismissTcs;
         private IGameSettingsPopupView _activePopupView;
 
-        public async UniTask OpenGameSettingsPopupAndWait(bool fromGameplay)
+        public async UniTask<SettingsPopupResult> OpenGameSettingsPopupAndWait(bool fromGameplay)
         {
             _activePopupView = await _popupPresenter.LoadPopup<IGameSettingsPopupView>(PopupName);
-            if(_activePopupView == null) return;
+            if(_activePopupView == null) return SettingsPopupResult.None;
 
             _activePopupView.InitializeView(new GameSettingsPopupViewData
             (
@@ -35,15 +35,15 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.Controller
                 OnAudioClicked,
                 OnMusicClicked,
                 OnHapticsClicked,
-                OnDismissButtonClicked
+                OnDismissButtonClicked,
+                OnHomeButtonClicked
             ));
 
             _activePopupView.PlayIntroAnimation();
 
-            _dismissTcs?.TrySetResult();
-            _dismissTcs = new UniTaskCompletionSource();
+            _dismissTcs = new UniTaskCompletionSource<SettingsPopupResult>();
 
-            await _dismissTcs.Task;
+            return await _dismissTcs.Task;
         }
 
         private void OnAudioClicked()
@@ -66,13 +66,23 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.Controller
 
         private void OnDismissButtonClicked()
         {
+            DismissPopup();
+            _dismissTcs?.TrySetResult(SettingsPopupResult.None);
+        }
+
+        private void OnHomeButtonClicked()
+        {
+            DismissPopup();
+            _dismissTcs?.TrySetResult(SettingsPopupResult.ReturnHome);
+        }
+
+        private void DismissPopup()
+        {
             if(_activePopupView != null)
             {
                 _popupPresenter.DismissPopup(_activePopupView);
                 _activePopupView = null;
             }
-
-            _dismissTcs?.TrySetResult();
         }
     }
 }

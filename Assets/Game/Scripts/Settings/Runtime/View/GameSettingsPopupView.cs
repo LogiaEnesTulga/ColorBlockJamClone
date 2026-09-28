@@ -27,6 +27,7 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.View
         [SerializeField] private Transform _homeButtonParent;
         [SerializeField] private Transform _defaultContentParent;
 
+        private Action _onHomeButtonClicked;
         private Action _onDismissButtonClicked;
 
         public void InitializeView(GameSettingsPopupViewData viewData)
@@ -38,6 +39,9 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.View
             _audioToggleButton.SubscribeListener(viewData.OnAudioToggleClicked);
             _musicToggleButton.SubscribeListener(viewData.OnMusicToggleClicked);
             _hapticsToggleButton.SubscribeListener(viewData.OnHapticsToggleClicked);
+
+            _homeButton.onClick.AddListener(OnHomeButtonClicked);
+            _onHomeButtonClicked += viewData.OnHomeButtonClicked;
 
             _dismissButton.onClick.AddListener(OnDismissButtonClick);
             _onDismissButtonClicked += viewData.OnDismissButtonClicked;
@@ -65,6 +69,11 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.View
         public void UpdateHaptics(bool enabled)
         {
             _hapticsToggleButton.Switch(enabled);
+        }
+
+        private void OnHomeButtonClicked()
+        {
+            _onHomeButtonClicked?.Invoke();
         }
 
         private void OnDismissButtonClick()

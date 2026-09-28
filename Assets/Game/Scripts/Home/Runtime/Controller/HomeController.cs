@@ -1,4 +1,4 @@
-using System;
+using RollicGames.ColorBlockJamClone.SceneLoad.Runtime.Presenter;
 using RollicGames.ColorBlockJamClone.Home.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Home.Runtime.View;
 using RollicGames.ColorBlockJamClone.Player.Runtime.Controller;
@@ -7,16 +7,18 @@ using Zenject;
 
 namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
 {
-    public class HomeController : IInitializable, IDisposable
+    public class HomeController : IInitializable
     {
+        private const string LevelSceneName = "Level";
+
         [Inject] private readonly HomeModel _homeModel;
         [Inject] private readonly IHomeView _homeView;
         [Inject] private readonly IPlayerController _playerController;
         [Inject] private readonly IGameSettingsController _gameSettingsController;
+        [Inject] private readonly ISceneLoader _sceneLoader;
 
         public void Initialize()
         {
-            SubscribeListeners();
             InitializeHome();
         }
 
@@ -31,7 +33,9 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
 
                 StartingTab = HomeNavigationType.Home,
 
+                OnLevelButtonClick = OnLevelButtonClicked,
                 OnSettingsButtonClick = OnSettingsButtonClicked,
+                OnNavigationTabClick = NavigateTo,
             };
 
             _homeView.InitializeView(viewData);
@@ -50,6 +54,8 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
 
         private async void OnSettingsButtonClicked()
         {
+            if(!_homeModel.IsHomeInteractable) return;
+
             _homeModel.IsHomeInteractable = false;
 
             await _gameSettingsController.OpenGameSettingsPopupAndWait(false);
@@ -57,19 +63,13 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
             _homeModel.IsHomeInteractable = true;
         }
 
-        private void SubscribeListeners()
+        private async void OnLevelButtonClicked()
         {
-            _homeView.OnNavigationTabClick += NavigateTo;
-        }
+            if(!_homeModel.IsHomeInteractable) return;
+            
+            _homeModel.IsHomeInteractable = false;
 
-        private void UnsubscribeListeners()
-        {
-            _homeView.OnNavigationTabClick -= NavigateTo;
-        }
-
-        public void Dispose()
-        {
-            UnsubscribeListeners();
+            await _sceneLoader.Load(LevelSceneName);
         }
     }
 }

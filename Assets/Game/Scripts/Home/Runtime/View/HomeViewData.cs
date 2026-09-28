@@ -10,6 +10,8 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.View
 
         public HomeNavigationType StartingTab;
 
+        public Action OnLevelButtonClick;
         public Action OnSettingsButtonClick;
+        public Action<HomeNavigationType> OnNavigationTabClick;
     }    
 }

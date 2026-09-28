@@ -15,8 +15,6 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Injection
             Container.Bind<HomeModel>().AsSingle().NonLazy();
             Container.BindInterfacesTo<HomeView>().FromInstance(_homeView).AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<HomeController>().AsSingle().NonLazy();
-
-            Container.ParentContainers[0].Bind<IContextPopupHandler>().FromInstance(_homeView).AsSingle();
         }
     }
 }

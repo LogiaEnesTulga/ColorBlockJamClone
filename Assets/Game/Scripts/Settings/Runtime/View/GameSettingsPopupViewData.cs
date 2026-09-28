@@ -13,9 +13,10 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.View
         public readonly Action OnMusicToggleClicked;
         public readonly Action OnHapticsToggleClicked;
         public readonly Action OnDismissButtonClicked;
+        public readonly Action OnHomeButtonClicked;
 
         public GameSettingsPopupViewData(bool audio, bool music, bool haptics, bool fromGameplay,
-         Action audioAction, Action musicAction, Action hapticsAction, Action dismissAction)
+         Action audioAction, Action musicAction, Action hapticsAction, Action dismissAction, Action homeAction)
         {
             IsAudioOn = audio;
             IsMusicOn = music;
@@ -26,6 +27,7 @@ namespace RollicGames.ColorBlockJamClone.Settings.Runtime.View
             OnMusicToggleClicked = musicAction;
             OnHapticsToggleClicked = hapticsAction;
             OnDismissButtonClicked = dismissAction;
+            OnHomeButtonClicked = homeAction;
         }
     }
 }

@@ -10,19 +10,21 @@ namespace RollicGames.UI.Runtime.Presenter
     {
         UniTask<T> LoadPopup<T>(string name) where T : class, IPopupView;
         void DismissPopup(IPopupView popupView);
+
+        void SetContextPopupHandler(IContextPopupHandler contextPopupHandler);
     }
 
     public class PopupPresenter : IPopupPresenter
     {
         [Inject] private readonly IAddressableLoader _addressableLoader;
-        [Inject] private readonly LazyInject<IContextPopupHandler> _contextPopupHandler;
+
+        private IContextPopupHandler _contextPopupHandler;
 
         public async UniTask<T> LoadPopup<T>(string name) where T : class, IPopupView
         {
-            var contextPopupHandler = _contextPopupHandler.Value;
-            if(contextPopupHandler == null) return null;
+            if(_contextPopupHandler == null) return null;
 
-            var popupParent = contextPopupHandler.PopupParent;
+            var popupParent = _contextPopupHandler.PopupParent;
             popupParent.gameObject.SetActive(true);
 
             var gameObject = await _addressableLoader.LoadPrefab(name, popupParent);
@@ -43,10 +45,12 @@ namespace RollicGames.UI.Runtime.Presenter
             
             _addressableLoader.Release(obj.gameObject);
 
-            var contextPopupHandler = _contextPopupHandler.Value;
-            if(contextPopupHandler == null) return;
+            _contextPopupHandler?.PopupParent.gameObject.SetActive(false);
+        }
 
-            contextPopupHandler.PopupParent.gameObject.SetActive(false);
+        public void SetContextPopupHandler(IContextPopupHandler contextPopupHandler)
+        {
+            _contextPopupHandler = contextPopupHandler;
         }
     }
 }
