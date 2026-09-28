@@ -1,3 +1,4 @@
+using RollicGames.ColorBlockJamClone.SceneLoad.Runtime.Model;
 using RollicGames.ColorBlockJamClone.SceneLoad.Runtime.Presenter;
 using RollicGames.ColorBlockJamClone.Home.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Home.Runtime.View;
@@ -9,8 +10,6 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
 {
     public class HomeController : IInitializable
     {
-        private const string LevelSceneName = "Level";
-
         [Inject] private readonly HomeModel _homeModel;
         [Inject] private readonly IHomeView _homeView;
         [Inject] private readonly IPlayerController _playerController;
@@ -69,7 +68,7 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
             
             _homeModel.IsHomeInteractable = false;
 
-            await _sceneLoader.Load(LevelSceneName);
+            await _sceneLoader.Load(SceneNameConstants.Level);
         }
     }
 }
