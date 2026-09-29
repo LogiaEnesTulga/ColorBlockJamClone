@@ -8,11 +8,23 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
 
         public virtual LevelObjectType ObjectType => LevelObjectType.None;
 
+        public int Id => _id;
         public int2 GridPosition => _gridPosition;
 
-        protected readonly int2 _gridPosition;
+        protected int _id;
+        protected int2 _gridPosition;
         
         public LevelObjectModel(int2 gridPosition)
+        {
+            _gridPosition = gridPosition;
+        }
+
+        public void SetId(int id)
+        {
+            _id = id;
+        }
+
+        public void SetPosition(int2 gridPosition)
         {
             _gridPosition = gridPosition;
         }

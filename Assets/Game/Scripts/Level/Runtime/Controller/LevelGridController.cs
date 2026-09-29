@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using Zenject;
 using RollicGames.Math.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Level.Runtime.View;
+using Zenject;
 
 namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 {
@@ -34,20 +33,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _gridModel.Width = 4;
             _gridModel.Height = 5;
 
-            _gridModel.Grid.Clear();
             _gridModel.Cells.Clear();
             _gridModel.Blocks.Clear();
             _gridModel.Doors.Clear();
-            for(var rowIndex = 0; rowIndex < _gridModel.Height; rowIndex++)
-            {
-                var list = new List<LevelObjectModel>();
-                for(var columnIndex = 0; columnIndex < _gridModel.Width; columnIndex++)
-                {
-                    list.Add(null);
-                }
-                
-                _gridModel.Grid.Add(list);
-            }
 
             var blueDoor = new LevelDoorObjectModel(new int2(1, 0), 3, LevelObjectColor.Blue, LevelDirection.Up);
             var purpleDoor = new LevelDoorObjectModel(new int2(0, 4), 3, LevelObjectColor.Purple, LevelDirection.Down);
@@ -78,26 +66,26 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
         private void AddDoorToGrid(LevelDoorObjectModel doorObject)
         {
-            if(!_gridModel.Doors.Add(doorObject)) return;
+            _gridModel.Doors.AddObjectWithId(doorObject);
 
             var isVertical = doorObject.AbsorbDirection is LevelDirection.Up or LevelDirection.Down;
             var direction = new int2(isVertical ? 1 : 0, isVertical ? 0 : 1);
             for(var i = 0; i < doorObject.Length; i++)
             {
                 var activePosition = doorObject.GridPosition + (direction * i);
-                _gridModel.Grid[activePosition.Y][activePosition.X] = doorObject;
+                _gridModel.Doors.ObjectsByPosition.Add(activePosition, doorObject);
             }
         }
 
         private void AddBlockToGrid(LevelBlockObjectModel blockObject)
         {
-            if(!_gridModel.Blocks.Add(blockObject)) return;
+            _gridModel.Blocks.AddObjectWithId(blockObject);
 
             var localPositions = blockObject.BlocksLocalPositions;
             for(var i = 0; i < localPositions.Count; i++)
             {
                 var activePosition = blockObject.GridPosition + localPositions[i];
-                _gridModel.Grid[activePosition.Y][activePosition.X] = blockObject;
+                _gridModel.Blocks.ObjectsByPosition.Add(activePosition, blockObject);
             }
         }
     }

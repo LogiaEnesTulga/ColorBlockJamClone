@@ -1,3 +1,5 @@
+using RollicGames.Math.Runtime.Model;
+
 namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
 {
     public enum LevelDirection
