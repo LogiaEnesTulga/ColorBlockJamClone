@@ -7,6 +7,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 {
     public class LevelBlockObjectView : MonoBehaviour
     {
+        private const float MoveDuration = 0.05f;
         private const float BlockedDragLimit = 0.15f;
 
         [SerializeField] private GameObject _centerPart;
@@ -23,12 +24,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         private Color _color;
         private Tween _moveTween;
 
-        private Vector2 _dragMin;
-        private Vector2 _dragMax;
-        private bool _isDragging;
         private Vector3 _targetPosition;
-        private Vector3 _dragOrigin;
-        private Vector3 _dragPosition;
+        private Vector3? _dragOrigin;
 
         public void InitializeView(int id, Color color, IReadOnlyList<int2> localPositions)
         {
@@ -144,54 +141,43 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         {
             _targetPosition = new Vector3(newPoint.X, -newPoint.Y, 0f) * _cornerLength;
 
-            if(_isDragging)
-            {
-                ApplyDragPosition();
-                return;
-            }
+            // While dragging, DragByWorldDelta positions the block every frame.
+            if(_dragOrigin.HasValue) return;
 
-            _moveTween?.Kill();
-            _moveTween = transform.DOLocalMove(_targetPosition, 0.05f);
+            MoveToTarget();
         }
 
         public void BeginDrag()
         {
             _moveTween?.Kill();
-            _isDragging = true;
             _dragOrigin = transform.localPosition;
-            _targetPosition = _dragOrigin;
-            _dragPosition = _dragOrigin;
-            _dragMin = _dragMax = Vector2.zero;
+            _targetPosition = _dragOrigin.Value;
         }
 
         public void DragByWorldDelta(Vector3 worldDelta, bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown)
         {
-            if(!_isDragging) return;
+            if(!_dragOrigin.HasValue) return;
 
-            _dragMin = new Vector2(canMoveLeft ? -_cornerLength : -BlockedDragLimit, canMoveDown ? -_cornerLength : -BlockedDragLimit);
-            _dragMax = new Vector2(canMoveRight ? _cornerLength : BlockedDragLimit, canMoveUp ? _cornerLength : BlockedDragLimit);
+            var desired = _dragOrigin.Value + transform.parent.InverseTransformVector(worldDelta);
+            var offset = desired - _targetPosition;
+            offset.x = Mathf.Clamp(offset.x, canMoveLeft ? -_cornerLength : -BlockedDragLimit, canMoveRight ? _cornerLength : BlockedDragLimit);
+            offset.y = Mathf.Clamp(offset.y, canMoveDown ? -_cornerLength : -BlockedDragLimit, canMoveUp ? _cornerLength : BlockedDragLimit);
 
-            var parent = transform.parent;
-            var localDelta = parent.InverseTransformVector(worldDelta);
-            _dragPosition = _dragOrigin + new Vector3(localDelta.x, localDelta.y, 0f);
-            ApplyDragPosition();
+            transform.localPosition = _targetPosition + new Vector3(offset.x, offset.y, 0f);
         }
 
         public void EndDrag()
         {
-            if(!_isDragging) return;
+            if(!_dragOrigin.HasValue) return;
 
-            _isDragging = false;
-            _moveTween?.Kill();
-            _moveTween = transform.DOLocalMove(_targetPosition, 0.05f);
+            _dragOrigin = null;
+            MoveToTarget();
         }
 
-        private void ApplyDragPosition()
+        private void MoveToTarget()
         {
-            var offset = _dragPosition - _targetPosition;
-            offset.x = Mathf.Clamp(offset.x, _dragMin.x, _dragMax.x);
-            offset.y = Mathf.Clamp(offset.y, _dragMin.y, _dragMax.y);
-            transform.localPosition = _targetPosition + offset;
+            _moveTween?.Kill();
+            _moveTween = transform.DOLocalMove(_targetPosition, MoveDuration);
         }
     }
 }
