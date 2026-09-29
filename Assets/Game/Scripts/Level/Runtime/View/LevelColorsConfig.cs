@@ -16,10 +16,12 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         }
 
         [SerializeField] private List<Entry> _colors = new();
+        [SerializeField] private List<Entry> _doorArrowColors = new();
         [SerializeField] private Color _gridColor = Color.white;
         [SerializeField] private Color _wallColor = Color.white;
 
         private readonly Dictionary<LevelObjectColor, Color> _colorsDictionary = new Dictionary<LevelObjectColor, Color>();
+        private readonly Dictionary<LevelObjectColor, Color> _doorArrowColorsDictionary = new Dictionary<LevelObjectColor, Color>();
 
         public Color GridColor => _gridColor;
         public Color WallColor => _wallColor;
@@ -37,16 +39,27 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         private void UpdateDictionary()
         {
             _colorsDictionary.Clear();
+            _doorArrowColorsDictionary.Clear();
             
             foreach(var colorEntry in _colors)
             {
                 _colorsDictionary.Add(colorEntry.Color, colorEntry.Value);
+            }
+
+            foreach(var colorEntry in _doorArrowColors)
+            {
+                _doorArrowColorsDictionary.Add(colorEntry.Color, colorEntry.Value);
             }
         }
 
         public Color GetColor(LevelObjectColor color)
         {
             return _colorsDictionary.GetValueOrDefault(color, Color.white);
+        }
+
+        public Color GetDoorArrowColor(LevelObjectColor color)
+        {
+            return _doorArrowColorsDictionary.GetValueOrDefault(color, Color.white);
         }
     }
 }

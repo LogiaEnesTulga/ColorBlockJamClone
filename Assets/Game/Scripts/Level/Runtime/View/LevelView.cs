@@ -46,11 +46,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         private void PrepareCamera(int width, int height)
         {
-            _levelCamera.transform.position = new Vector3(width - 1f, -height - 1f, -10f);
-
             var biggerEdge = width > height ? width : height;
 
-            _levelCamera.orthographicSize = Mathf.Lerp(6f, 25f, biggerEdge / 24f);
+            _levelCamera.transform.position = new Vector3(width - 1f, -2f * height, -4.6f * biggerEdge);
         }
 
         private void SetLevelText(int level)

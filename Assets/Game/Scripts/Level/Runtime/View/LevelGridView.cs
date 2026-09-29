@@ -15,9 +15,11 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         [SerializeField] private Transform _gridParent;
         [SerializeField] private Transform _blocksParent;
+        [SerializeField] private Transform _doorsParent;
 
         [SerializeField] private GameObject _gridPrefab;
         [SerializeField] private LevelBlockObjectView _blockPrefab;
+        [SerializeField] private LevelDoorView _doorPrefab;
         [SerializeField] private LevelColorsConfig _colorsConfig;
 
         [Inject] private readonly LevelGridModel _gridModel;
@@ -26,6 +28,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         {
             PrepareGrids();
             PrepareBlocks();
+            PrepareDoors();
         }
 
         private void PrepareGrids()
@@ -48,6 +51,17 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var blockView = Instantiate(_blockPrefab, _blocksParent);
                 blockView.transform.localPosition = new Vector3(block.GridPosition.X, -block.GridPosition.Y, 0f) * _cornerLength;
                 blockView.InitializeView(block.BlocksLocalPositions, color);
+            }
+        }
+
+        private void PrepareDoors()
+        {
+            foreach(var door in _gridModel.Doors)
+            {
+                var doorColor = _colorsConfig.GetColor(door.Color);
+                var doorArrowColor = _colorsConfig.GetDoorArrowColor(door.Color);
+                var doorView = Instantiate(_doorPrefab, _doorsParent);
+                doorView.InitializeView(door.GridPosition, door.AbsorbDirection, door.Length, doorColor, doorArrowColor);
             }
         }
     }

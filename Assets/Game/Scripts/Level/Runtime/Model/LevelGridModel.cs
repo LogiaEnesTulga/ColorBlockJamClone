@@ -10,6 +10,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
 
         public readonly HashSet<int2> Cells = new HashSet<int2>();
         public readonly HashSet<LevelBlockObjectModel> Blocks = new HashSet<LevelBlockObjectModel>();
+        public readonly HashSet<LevelDoorObjectModel> Doors = new HashSet<LevelDoorObjectModel>();
         public readonly List<List<LevelObjectModel>> Grid = new List<List<LevelObjectModel>>();
     }
 }
