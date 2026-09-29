@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 using RollicGames.Math.Runtime.Model;
 using UnityEngine;
 
@@ -23,7 +24,15 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         [SerializeField] private float _cornerLength = 2f;
 
+        [SerializeField] private LevelColorsConfig _colorsConfig;
+
         [SerializeField] private List<Vector2Int> _testLocalPositions;
+        [SerializeField] private LevelObjectColor _testColor;
+
+        private static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
+
+        private MaterialPropertyBlock _propertyBlock;
+        private Color _color;
 
         [ContextMenu("TestShape")]
         public void TestShape()
@@ -44,12 +53,14 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             {
                 positions.Add(new int2(position.x, position.y));
             }
-            InitializeView(positions);
+            InitializeView(positions, _testColor);
         }
 
 
-        public void InitializeView(IReadOnlyList<int2> localPositions)
+        public void InitializeView(IReadOnlyList<int2> localPositions, LevelObjectColor levelColor)
         {
+            _color = _colorsConfig.GetColor(levelColor);
+
             for(var i = 0; i < localPositions.Count; i++)
             {
                 var localPosition = localPositions[i];
@@ -58,13 +69,25 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
                 
                 InitializeCornerOfPoint(localPositions, i, Left, Up, LeftUp, LeftDown, 90f); // Left Up
-                InitializeCornerOfPoint(localPositions, i, Right, Up, RightUp, RightDown, 270f); // Right Up
-                InitializeCornerOfPoint(localPositions, i, Left, Down, LeftDown, LeftUp, 90f); // Left Down
+                InitializeCornerOfPoint(localPositions, i, Right, Up, RightUp, RightDown, 0f); // Right Up
+                InitializeCornerOfPoint(localPositions, i, Left, Down, LeftDown, LeftUp, 180f); // Left Down
                 InitializeCornerOfPoint(localPositions, i, Right, Down, RightDown, RightUp, 270f); // Right Down
             }
         }
 
-        private void InitializeCornerOfPoint(IReadOnlyList<int2> localPositions, int positionIndex, int2 firstCheck, int2 secondCheck, int2 crossCheck, int2 meshScaleMultiplier, float edgeAngle)
+        private void ApplyColor(GameObject part)
+        {
+            var renderer = part.GetComponent<Renderer>();
+            if(renderer == null) return;
+
+            _propertyBlock ??= new();
+            
+            renderer.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetColor(ColorPropertyId, _color);
+            renderer.SetPropertyBlock(_propertyBlock);
+        }
+
+        private void InitializeCornerOfPoint(IReadOnlyList<int2> localPositions, int positionIndex, int2 firstCheck, int2 secondCheck, int2 crossCheck, int2 meshScaleMultiplier, float rotationAngle)
         {
             var localPosition = localPositions[positionIndex];
             var firstNeighbour = false;
@@ -100,8 +123,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             if(firstNeighbour && secondNeighbour && crossNeighbour)
             {
                 var createdMesh = Instantiate(_centerPart, transform);
+                ApplyColor(createdMesh);
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
-                createdMesh.transform.localScale = new Vector3(meshScaleMultiplier.X, meshScaleMultiplier.Y, 1f);
+                createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
             else if(crossNeighbour)
             {
@@ -110,27 +134,46 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             else if(firstNeighbour && secondNeighbour)
             {
                 var createdMesh = Instantiate(_innertCornerPart, transform);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(meshScaleMultiplier.X, meshScaleMultiplier.Y, 0f);
-                createdMesh.transform.localScale = new Vector3(meshScaleMultiplier.X, meshScaleMultiplier.Y, 1f);
+                ApplyColor(createdMesh);
+                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(firstCheck.X, -secondCheck.Y, 0f);
+                createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
             else if(firstNeighbour)
             {
+                var additionalAngle = 0f;
+                var additionalPosition = int2.Zero;
+                if(crossCheck.X == crossCheck.Y)
+                {
+                    additionalAngle = -90f;
+                    additionalPosition = new int2(crossCheck.X, 0);
+                }
+
                 var createdMesh = Instantiate(_edgePart, transform);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
-                createdMesh.transform.localScale = new Vector3(meshScaleMultiplier.X, meshScaleMultiplier.Y, 1f);
+                ApplyColor(createdMesh);
+                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(additionalPosition.X, additionalPosition.Y, 0f);
+                createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle + additionalAngle);
             }
             else if(secondNeighbour)
             {
+                var additionalAngle = 0f;
+                var additionalPosition = int2.Zero;
+                if(crossCheck.X != crossCheck.Y)
+                {
+                    additionalAngle = -90f;
+                    additionalPosition = new int2(0, -crossCheck.Y);
+                }
+
                 var createdMesh = Instantiate(_edgePart, transform);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
-                createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, edgeAngle);
-                createdMesh.transform.localScale = new Vector3(-1 * meshScaleMultiplier.X * meshScaleMultiplier.Y, 1f, 1f);
+                ApplyColor(createdMesh);
+                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(additionalPosition.X, additionalPosition.Y, 0f);
+                createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle + additionalAngle);
             }
             else
             {
                 var createdMesh = Instantiate(_outerCornerPart, transform);
+                ApplyColor(createdMesh);
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
-                createdMesh.transform.localScale = new Vector3(meshScaleMultiplier.X, meshScaleMultiplier.Y, 1f);
+                createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
         }
     }
