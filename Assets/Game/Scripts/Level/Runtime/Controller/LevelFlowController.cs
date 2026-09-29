@@ -10,9 +10,11 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
     {
         [Inject] private readonly LevelModel _levelModel;
         [Inject] private readonly LevelGridModel _levelGridModel;
+        [Inject] private readonly ILevelGridView _levelGridView;
         [Inject] private readonly ILevelInputView _levelInputView;
         [Inject] private readonly ILevelMoveController _moveController;
 
+        private float2 _grabWorldPosition;
         private int2 _lastTouchedGridPosition;
         private LevelBlockObjectModel _draggingObjectModel = null;
 
@@ -69,9 +71,10 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             if(!_levelGridModel.Blocks.ObjectsById.TryGetValue(blockId, out var blockModel)) return;
             if(!blockModel.IsActive) return;
 
-            // TODO selected block view
             _lastTouchedGridPosition = startingTouchGridPosition;
             _draggingObjectModel = blockModel;
+            _grabWorldPosition = _levelInputView.TouchWorldPosition;
+            _levelGridView.BeginDragBlock(blockId);
         }
 
         private void OnTouchMoved(int2 gridPosition)
@@ -79,13 +82,20 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             if(_levelModel.IsLevelPaused || _draggingObjectModel == null) return;
 
             TryToMoveBlock(gridPosition);
+            var id = _draggingObjectModel.Id;
+            _levelGridView.DragBlock(id,
+                _levelInputView.TouchWorldPosition - _grabWorldPosition,
+                _moveController.CanMove(id, LevelDirection.Left),
+                _moveController.CanMove(id, LevelDirection.Right),
+                _moveController.CanMove(id, LevelDirection.Up),
+                _moveController.CanMove(id, LevelDirection.Down));
         }
 
         private void OnTouchEnded()
         {
             if(_draggingObjectModel == null) return;
 
-            // TODO deselected block view
+            _levelGridView.EndDragBlock(_draggingObjectModel.Id);
             _draggingObjectModel = null;
         }
 

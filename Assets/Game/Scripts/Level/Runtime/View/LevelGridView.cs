@@ -10,6 +10,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
     {
         void InitializeView();
         void MoveBlock(int id, int2 newPoint);
+        void BeginDragBlock(int id);
+        void DragBlock(int id, float2 worldDelta, bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown);
+        void EndDragBlock(int id);
     }
 
     public class LevelGridView : MonoBehaviour, ILevelGridView
@@ -79,6 +82,21 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             if(!_blocksById.TryGetValue(id, out var blockView)) return;
 
             blockView.MoveToPoint(newPoint);
+        }
+
+        public void BeginDragBlock(int id)
+        {
+            if(_blocksById.TryGetValue(id, out var blockView)) blockView.BeginDrag();
+        }
+
+        public void DragBlock(int id, float2 worldDelta, bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown)
+        {
+            if(_blocksById.TryGetValue(id, out var blockView)) blockView.DragByWorldDelta(new Vector3(worldDelta.X, worldDelta.Y, 0f), canMoveLeft, canMoveRight, canMoveUp, canMoveDown);
+        }
+
+        public void EndDragBlock(int id)
+        {
+            if(_blocksById.TryGetValue(id, out var blockView)) blockView.EndDrag();
         }
     }
 }

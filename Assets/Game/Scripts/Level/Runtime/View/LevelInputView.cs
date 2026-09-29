@@ -9,6 +9,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         public event Action<int, int2> OnBlockClickStarted;
         public event Action<int2> OnTouchMoved;
         public event Action OnTouchEnded;
+        public float2 TouchWorldPosition { get; }
     }
 
     public class LevelInputView : MonoBehaviour, ILevelInputView
@@ -23,6 +24,17 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         public event Action<int, int2> OnBlockClickStarted;
         public event Action<int2> OnTouchMoved;
         public event Action OnTouchEnded;
+
+        public float2 TouchWorldPosition
+        {
+            get
+            {
+                Ray ray = _levelCamera.ScreenPointToRay(_touchPosition);
+                var distance = (-0.84f - ray.origin.z) / ray.direction.z;
+                var point = ray.GetPoint(distance);
+                return new float2(point.x, point.y);
+            }
+        }
 
         private void Update()
         {
@@ -108,10 +120,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         private int2 GetGridPositionOfTouch()
         {
-            Ray ray = _levelCamera.ScreenPointToRay(_touchPosition);
-            var distance = (-0.84f - ray.origin.z) / ray.direction.z;
-            var onGridPoint = ray.GetPoint(distance);
-            return new int2((int)System.Math.Floor((onGridPoint.x + 1f) * 0.5d), -(int)System.Math.Floor((onGridPoint.y + 1f) * 0.5d));
+            var onGridPoint = TouchWorldPosition;
+            return new int2((int)System.Math.Floor((onGridPoint.X + 1f) * 0.5d), -(int)System.Math.Floor((onGridPoint.Y + 1f) * 0.5d));
         }
     }
 }

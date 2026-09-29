@@ -8,6 +8,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
     public interface ILevelMoveController
     {
         bool Move(int id, LevelDirection direction);
+        bool CanMove(int id, LevelDirection direction);
     }
     
     public class LevelMoveController : ILevelMoveController
@@ -24,6 +25,13 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             
             MoveBlockToDirection(blockModel, directionVector);
             return true;
+        }
+
+        public bool CanMove(int id, LevelDirection direction)
+        {
+            if(!_gridModel.Blocks.ObjectsById.TryGetValue(id, out var blockModel)) return false;
+
+            return CanMoveToDirection(blockModel, direction.GetDirectionVector());
         }
 
         private bool CanMoveToDirection(LevelBlockObjectModel blockModel, int2 directionVector)
