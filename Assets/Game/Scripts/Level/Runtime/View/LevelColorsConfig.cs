@@ -16,15 +16,20 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         }
 
         [SerializeField] private List<Entry> _colors = new();
+        [SerializeField] private Color _gridColor = Color.white;
+        [SerializeField] private Color _wallColor = Color.white;
 
         private readonly Dictionary<LevelObjectColor, Color> _colorsDictionary = new Dictionary<LevelObjectColor, Color>();
+
+        public Color GridColor => _gridColor;
+        public Color WallColor => _wallColor;
 
         private void OnEnable()
         {
             UpdateDictionary();
         }
 
-        private void Oalidate()
+        private void OnValidate()
         {
             UpdateDictionary();
         }

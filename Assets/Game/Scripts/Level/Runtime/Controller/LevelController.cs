@@ -13,6 +13,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
     {
         [Inject] private readonly LevelModel _levelModel;
         [Inject] private readonly ILevelView _levelView;
+        [Inject] private readonly ILevelGridController _gridController;
         [Inject] private readonly IPlayerController _playerController;
         [Inject] private readonly IGameSettingsController _gameSettingsController;
         [Inject] private readonly ISceneLoader _sceneLoader;
@@ -24,17 +25,19 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
         private void InitializeLevel()
         {
+            _gridController.InitializeGrid();
+
             var viewData = new LevelViewData()
             {
                 PlayerLevel = _playerController.GetLevel(),
                 PlayerCoinAmount = _playerController.GetCoin(),
 
+                LevelWidth = _gridController.LevelWidth,
+                LevelHeight = _gridController.LevelHeight,
+
                 OnPauseButtonClick = OnPauseButtonClicked,
             };
-
             _levelView.InitializeView(viewData);
-
-            // TODO Generate Level Grid here (model and view)
         }
 
         private async void OnPauseButtonClicked()

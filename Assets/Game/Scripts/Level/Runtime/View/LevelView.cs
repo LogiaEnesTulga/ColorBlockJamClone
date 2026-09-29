@@ -21,6 +21,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         [SerializeField] private Button _pauseButton;
 
+        [SerializeField] private Camera _levelCamera;
+
         [SerializeField] private Transform _popupParent;
 
         [Inject] private readonly IPopupPresenter _popupPresenter;
@@ -31,6 +33,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         public void InitializeView(LevelViewData viewData)
         {
+            PrepareCamera(viewData.LevelWidth, viewData.LevelHeight);
+            
             _popupPresenter.SetContextPopupHandler(this);
             
             SetLevelText(viewData.PlayerLevel);
@@ -38,6 +42,15 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
             _onPauseButtonClick += viewData.OnPauseButtonClick;
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
+        }
+
+        private void PrepareCamera(int width, int height)
+        {
+            _levelCamera.transform.position = new Vector3(width - 1f, -height - 1f, -10f);
+
+            var biggerEdge = width > height ? width : height;
+
+            _levelCamera.orthographicSize = Mathf.Lerp(6f, 25f, biggerEdge / 24f);
         }
 
         private void SetLevelText(int level)

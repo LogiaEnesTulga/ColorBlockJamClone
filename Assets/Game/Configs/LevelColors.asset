@@ -27,3 +27,5 @@ MonoBehaviour:
     Value: {r: 1, g: 0.06575353, b: 0, a: 1}
   - Color: 7
     Value: {r: 1, g: 0.913718, b: 0, a: 1}
+  _gridColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+  _wallColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}

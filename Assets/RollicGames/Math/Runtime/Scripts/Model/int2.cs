@@ -8,6 +8,15 @@ namespace RollicGames.Math.Runtime.Model
         public static readonly int2 Zero = new(0, 0);
         public static readonly int2 One = new(1, 1);
 
+        public static readonly int2 Left = new (-1, 0);
+        public static readonly int2 Right = new (1, 0);
+        public static readonly int2 Up = new (0, -1);
+        public static readonly int2 Down = new (0, 1);
+        public static readonly int2 LeftUp = new (-1, -1);
+        public static readonly int2 LeftDown = new (-1, 1);
+        public static readonly int2 RightUp = new (1, -1);
+        public static readonly int2 RightDown = new (1, 1);
+
         public readonly int X;
         public readonly int Y;
 

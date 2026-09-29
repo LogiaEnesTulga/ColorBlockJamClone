@@ -7,6 +7,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         public int PlayerLevel;
         public int PlayerCoinAmount;
 
+        public int LevelWidth;
+        public int LevelHeight;
+
         // TODO : Add here Level Grid Data
 
         public Action OnPauseButtonClick;

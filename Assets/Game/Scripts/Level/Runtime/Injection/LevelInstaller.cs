@@ -9,12 +9,18 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
     public class LevelInstaller : MonoInstaller
     {
         [SerializeField] private LevelView _levelView;
+        [SerializeField] private LevelGridView _levelGridView;
 
         public override void InstallBindings()
         {
             Container.Bind<LevelModel>().AsSingle().NonLazy();
+            Container.Bind<LevelGridModel>().AsSingle().NonLazy();
+
             Container.BindInterfacesTo<LevelView>().FromInstance(_levelView).AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelGridView>().FromInstance(_levelGridView).AsSingle().NonLazy();
+
             Container.BindInterfacesAndSelfTo<LevelController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelGridController>().AsSingle().NonLazy();
         }
     }
 }
