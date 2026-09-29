@@ -10,6 +10,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
     {
         [SerializeField] private LevelView _levelView;
         [SerializeField] private LevelGridView _levelGridView;
+        [SerializeField] private LevelInputView _levelInputView;
 
         public override void InstallBindings()
         {
@@ -18,9 +19,12 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
 
             Container.BindInterfacesTo<LevelView>().FromInstance(_levelView).AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelGridView>().FromInstance(_levelGridView).AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelInputView>().FromInstance(_levelInputView).AsSingle().NonLazy();
 
             Container.BindInterfacesAndSelfTo<LevelController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelGridController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelMoveController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<LevelFlowController>().AsSingle().NonLazy();
         }
     }
 }

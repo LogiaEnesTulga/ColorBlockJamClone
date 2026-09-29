@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RollicGames.Math.Runtime.Model;
 using UnityEngine;
+using DG.Tweening;
 
 namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 {
@@ -14,10 +15,15 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         [SerializeField] private float _cornerLength = 2f;
 
-        private Color _color;
+        public int Id => _id;
 
-        public void InitializeView(IReadOnlyList<int2> localPositions, Color color)
+        private Color _color;
+        private Tween _moveTween;
+        private int _id;
+
+        public void InitializeView(int id, Color color, IReadOnlyList<int2> localPositions)
         {
+            _id = id;
             _color = color;
 
             for(var i = 0; i < localPositions.Count; i++)
@@ -123,6 +129,14 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
+        }
+
+        public void MoveToPoint(int2 newPoint)
+        {
+            var newPosition = new Vector3(newPoint.X, -newPoint.Y, 0f) * _cornerLength;
+
+            _moveTween?.Kill();
+            _moveTween = transform.DOLocalMove(newPosition, 0.05f);
         }
     }
 }
