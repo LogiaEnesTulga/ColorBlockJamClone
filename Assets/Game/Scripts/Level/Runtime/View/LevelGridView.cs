@@ -34,9 +34,21 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         
         public void InitializeView()
         {
+            ClearChildren(_gridParent);
+            ClearChildren(_blocksParent);
+            ClearChildren(_doorsParent);
+
             PrepareGrids();
             PrepareBlocks();
             PrepareDoors();
+        }
+
+        private static void ClearChildren(Transform parent)
+        {
+            for(var i = parent.childCount - 1; i >= 0; i--)
+            {
+                Destroy(parent.GetChild(i).gameObject);
+            }
         }
 
         private void PrepareGrids()

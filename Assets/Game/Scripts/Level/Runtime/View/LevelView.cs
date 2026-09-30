@@ -11,6 +11,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
     public interface ILevelView
     {
         void InitializeView(LevelViewData viewData);
+        void PrepareForReuse();
     }
 
     public class LevelView : MonoBehaviour, ILevelView, IContextPopupHandler
@@ -40,8 +41,24 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             SetLevelText(viewData.PlayerLevel);
             SetCoinText(viewData.PlayerCoinAmount);
 
+            SubscribeListeners(viewData);
+        }
+
+        public void PrepareForReuse()
+        {
+            RemoveListeners();
+        }
+
+        private void SubscribeListeners(LevelViewData viewData)
+        {
             _onPauseButtonClick += viewData.OnPauseButtonClick;
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
+        }
+
+        private void RemoveListeners()
+        {
+            _onPauseButtonClick = null;
+            _pauseButton.onClick.RemoveAllListeners();
         }
 
         private void PrepareCamera(int width, int height)

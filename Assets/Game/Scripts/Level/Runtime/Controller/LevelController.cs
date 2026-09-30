@@ -9,7 +9,7 @@ using Zenject;
 
 namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 {
-    public class LevelController : IInitializable
+    public class LevelController : IInitializable, ISceneHandler
     {
         [Inject] private readonly LevelModel _levelModel;
         [Inject] private readonly ILevelView _levelView;
@@ -18,8 +18,17 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         [Inject] private readonly IGameSettingsController _gameSettingsController;
         [Inject] private readonly ISceneLoader _sceneLoader;
 
+        public string SceneName => SceneNameConstants.Level;
+
         public void Initialize()
         {
+            _sceneLoader.RegisterHandler(this);
+            InitializeLevel();
+        }
+
+        public void OnSceneReactivated()
+        {
+            PrepareForReuse();
             InitializeLevel();
         }
 
@@ -38,6 +47,14 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
                 OnPauseButtonClick = OnPauseButtonClicked,
             };
             _levelView.InitializeView(viewData);
+        }
+
+        private void PrepareForReuse()
+        {
+            _levelModel.IsLevelStarted = false;
+            _levelModel.IsLevelPaused = false;
+
+            _levelView.PrepareForReuse();
         }
 
         private async void OnPauseButtonClicked()

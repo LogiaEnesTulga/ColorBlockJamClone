@@ -8,7 +8,7 @@ using Zenject;
 
 namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
 {
-    public class HomeController : IInitializable
+    public class HomeController : IInitializable, ISceneHandler
     {
         [Inject] private readonly HomeModel _homeModel;
         [Inject] private readonly IHomeView _homeView;
@@ -16,16 +16,26 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
         [Inject] private readonly IGameSettingsController _gameSettingsController;
         [Inject] private readonly ISceneLoader _sceneLoader;
 
+        public string SceneName => SceneNameConstants.Home;
+
         public void Initialize()
         {
-            InitializeHome();
+            _sceneLoader.RegisterHandler(this);
+            _homeModel.ActiveTab = HomeNavigationType.Home;
+            _homeView.InitializeView(GetViewData());
         }
 
-        private void InitializeHome()
+        public void OnSceneReactivated()
         {
-            _homeModel.ActiveTab = HomeNavigationType.Home;
+            _homeModel.IsHomeInteractable = true;
+            _homeView.PrepareForReuse();
 
-            var viewData = new HomeViewData()
+            Initialize();
+        }
+
+        private HomeViewData GetViewData()
+        {
+            return new HomeViewData()
             {
                 PlayerLevel = _playerController.GetLevel(),
                 PlayerCoinAmount = _playerController.GetCoin(),
@@ -36,8 +46,6 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
                 OnSettingsButtonClick = OnSettingsButtonClicked,
                 OnNavigationTabClick = NavigateTo,
             };
-
-            _homeView.InitializeView(viewData);
         }
 
         private void NavigateTo(HomeNavigationType to)

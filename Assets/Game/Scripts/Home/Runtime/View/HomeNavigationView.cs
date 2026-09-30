@@ -20,6 +20,16 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.View
             }
         }
 
+        public void PrepareForReuse()
+        {
+            foreach(var tab in _navigationTabDictionary.Values)
+            {
+                tab.PrepareForReuse();
+            }
+
+            _navigationTabDictionary.Clear();
+        }
+
         public void NavigateTo(HomeNavigationType to, HomeNavigationType from = HomeNavigationType.None, bool animate = true)
         {
             if(from != HomeNavigationType.None)

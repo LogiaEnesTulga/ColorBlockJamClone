@@ -12,6 +12,7 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.View
     public interface IHomeView
     {
         public void InitializeView(HomeViewData viewData);
+        public void PrepareForReuse();
         public void NavigateTo(HomeNavigationType to, HomeNavigationType from = HomeNavigationType.None, bool animate = true);
     }
 
@@ -43,6 +44,13 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.View
             SetCoinText(viewData.PlayerCoinAmount);
             _levelText.SetText($"Level {viewData.PlayerLevel}");
 
+            SubscribeListeners(viewData);
+
+            _navigationView.NavigateTo(viewData.StartingTab, animate: false);
+        }
+
+        private void SubscribeListeners(HomeViewData viewData)
+        {
             _onLevelButtonClick += viewData.OnLevelButtonClick;
             _settingsButton.onClick.AddListener(OnSettingsButtonClicked);
 
@@ -50,8 +58,24 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.View
             _levelButton.onClick.AddListener(OnLevelButtonClicked);
 
             _onNavigationTabClick += viewData.OnNavigationTabClick;
+        }
 
-            _navigationView.NavigateTo(viewData.StartingTab, animate: false);
+        private void RemoveListeners()
+        {
+            _onLevelButtonClick = null;
+            _settingsButton.onClick.RemoveAllListeners();
+
+            _onSettingsButtonClick = null;
+            _levelButton.onClick.RemoveAllListeners();
+
+            _onNavigationTabClick = null;
+        }
+
+        public void PrepareForReuse()
+        {
+            RemoveListeners();   
+
+            _navigationView.PrepareForReuse();
         }
 
         private void SetCoinText(int amount)

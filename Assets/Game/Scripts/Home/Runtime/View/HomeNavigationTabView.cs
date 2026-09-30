@@ -33,6 +33,17 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.View
             _tabClickListener = tabClickListener;
         }
 
+        public void PrepareForReuse()
+        {
+            SetTabDeactive();
+
+            _tabButton.onClick.RemoveAllListeners();
+            _tabClickListener = null;
+
+            _enablingAnimationSequence?.Kill();
+            _enablingAnimationSequence = null;
+        }
+
         public void SetTabActive(bool animate)
         {
             _activeTabParent.gameObject.SetActive(true);
