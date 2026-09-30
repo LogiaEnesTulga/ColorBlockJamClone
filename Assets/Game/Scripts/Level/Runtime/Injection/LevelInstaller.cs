@@ -50,6 +50,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
 
             Container.BindInterfacesAndSelfTo<LevelController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelGridController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelFailPopupController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelMoveController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelTimerController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelTickPresenter>().AsSingle().NonLazy();
