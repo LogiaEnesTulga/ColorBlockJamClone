@@ -44,7 +44,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
                                 (distance.X > 0 ? LevelDirection.Right : LevelDirection.Left);
                                 
                                 
-            var isMoved = _moveController.Move(_draggingObjectModel.PoolId, firstDirection);
+            var isMoved = _moveController.Move(_draggingObjectModel.Id, firstDirection);
             if(isMoved)
             {
                 _lastTouchedGridPosition += firstDirection.GetDirectionVector();
@@ -54,7 +54,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
             if(!isMoved && hasSecondDirection)
             {
-                isMoved = _moveController.Move(_draggingObjectModel.PoolId, secondDirection);
+                isMoved = _moveController.Move(_draggingObjectModel.Id, secondDirection);
                 if(isMoved)
                 {
                     _lastTouchedGridPosition += secondDirection.GetDirectionVector();
@@ -82,7 +82,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             if(_levelModel.IsLevelPaused || _draggingObjectModel == null) return;
 
             TryToMoveBlock(gridPosition);
-            var id = _draggingObjectModel.PoolId;
+            var id = _draggingObjectModel.Id;
             _levelGridView.DragBlock(id,
                 _levelInputView.TouchWorldPosition - _grabWorldPosition,
                 _moveController.CanMove(id, LevelDirection.Left),
@@ -95,7 +95,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         {
             if(_draggingObjectModel == null) return;
 
-            _levelGridView.EndDragBlock(_draggingObjectModel.PoolId);
+            _levelGridView.EndDragBlock(_draggingObjectModel.Id);
             _draggingObjectModel = null;
         }
 

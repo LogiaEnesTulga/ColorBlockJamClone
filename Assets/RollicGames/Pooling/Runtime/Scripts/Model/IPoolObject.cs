@@ -2,9 +2,9 @@ namespace RollicGames.Pooling.Runtime.Model
 {
     public interface IPoolObject
     {
-        int PoolId { get; }
+        int Id { get; }
 
-        void SetPoolId(int poolId);
+        void SetId(int id);
         void OnReturnedToPool();
     }
 }

@@ -41,13 +41,13 @@ namespace RollicGames.Pooling.Runtime.Controller
             }
 
             var poolObject = _availableObjects.Pop();
-            _isAvailableById[poolObject.PoolId] = false;
+            _isAvailableById[poolObject.Id] = false;
             return poolObject;
         }
 
         public void Pool(T poolObject)
         {
-            var id = poolObject.PoolId;
+            var id = poolObject.Id;
             if(id < 0 || id >= _allObjects.Count || !ReferenceEquals(_allObjects[id], poolObject))
             {
                 throw new InvalidOperationException("Returned object does not belong to this pool.");
@@ -81,7 +81,7 @@ namespace RollicGames.Pooling.Runtime.Controller
             for(var i = 0; i < _expandCount; i++)
             {
                 var poolObject = _factory();
-                poolObject.SetPoolId(_allObjects.Count);
+                poolObject.SetId(_allObjects.Count);
 
                 _allObjects.Add(poolObject);
                 _isAvailableById.Add(true);

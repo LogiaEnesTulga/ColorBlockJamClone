@@ -9,12 +9,12 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
 
         public virtual LevelObjectType ObjectType => LevelObjectType.None;
 
-        public int PoolId => _poolId;
+        public int Id => _id;
 
         public int2 GridPosition => _gridPosition;
 
 
-        private int _poolId;
+        private int _id;
         protected int2 _gridPosition;
 
         public void SetPosition(int2 gridPosition)
@@ -22,9 +22,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
             _gridPosition = gridPosition;
         }
 
-        public void SetPoolId(int poolId)
+        public void SetId(int id)
         {
-            _poolId = poolId;
+            _id = id;
         }
 
         public virtual void OnReturnedToPool() {}

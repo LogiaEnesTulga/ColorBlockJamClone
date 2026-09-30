@@ -72,9 +72,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var color = _colorsConfig.GetColor(block.Color);
                 var blockView = Instantiate(_blockPrefab, _blocksParent);
                 blockView.transform.localPosition = new Vector3(block.GridPosition.X, -block.GridPosition.Y, 0f) * _cornerLength;
-                blockView.InitializeView(block.PoolId, color, block.BlocksLocalPositions);
+                blockView.InitializeView(block.Id, color, block.BlocksLocalPositions);
 
-                _blocksById.Add(block.PoolId, blockView);
+                _blocksById.Add(block.Id, blockView);
             }
         }
 

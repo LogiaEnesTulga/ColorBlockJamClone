@@ -66,7 +66,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
                 _gridModel.Blocks.ObjectsByPosition.Add(gridPosition, blockModel);
             }
 
-            _gridView.MoveBlock(blockModel.PoolId, newPosition);
+            _gridView.MoveBlock(blockModel.Id, newPosition);
         }
     }
 }
