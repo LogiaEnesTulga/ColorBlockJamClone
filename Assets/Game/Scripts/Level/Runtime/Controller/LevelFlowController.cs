@@ -6,23 +6,54 @@ using Zenject;
 
 namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 {
-    public class LevelFlowController : IInitializable, IDisposable
+    public interface ILevelFlowController
+    {
+        event Action OnLevelFailed;
+
+        void PrepareForReuse();
+    }
+
+    public class LevelFlowController : ILevelFlowController, IInitializable, IDisposable
     {
         [Inject] private readonly LevelModel _levelModel;
         [Inject] private readonly LevelGridModel _levelGridModel;
         [Inject] private readonly ILevelGridView _levelGridView;
         [Inject] private readonly ILevelInputView _levelInputView;
         [Inject] private readonly ILevelMoveController _moveController;
+        [Inject] private readonly ILevelTimerController _timerController;
 
         private float2 _grabWorldPosition;
         private int2 _lastTouchedGridPosition;
         private LevelBlockObjectModel _draggingObjectModel = null;
+
+        public event Action OnLevelFailed;
 
         public void Initialize()
         {
             _levelInputView.OnBlockClickStarted += OnBlockClicked;
             _levelInputView.OnTouchMoved += OnTouchMoved;
             _levelInputView.OnTouchEnded += OnTouchEnded;
+            _timerController.OnLevelTimerExpired += OnLevelTimerExpired;
+        }
+
+        public void PrepareForReuse()
+        {
+            CancelDragging();
+        }
+
+        private void OnLevelTimerExpired()
+        {
+            CancelDragging();
+
+            OnLevelFailed?.Invoke();
+        }
+
+        private void CancelDragging()
+        {
+            if(_draggingObjectModel == null) return;
+
+            _levelGridView.EndDragBlock(_draggingObjectModel.Id);
+            _draggingObjectModel = null;
         }
 
         private void TryToMoveBlock(int2 gridPosition)
@@ -70,6 +101,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
             if(!_levelGridModel.Blocks.ObjectsById.TryGetValue(blockId, out var blockModel)) return;
             if(!blockModel.IsActive) return;
+
+            _levelModel.IsLevelStarted = true;
 
             _lastTouchedGridPosition = startingTouchGridPosition;
             _draggingObjectModel = blockModel;

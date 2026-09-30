@@ -13,7 +13,8 @@
         "GUID:aed577f2bc3caf24e858234108dfffc8",
         "GUID:eb43fc45a8cc49849a0b28ae125990b2",
         "RollicGames.Pooling.Runtime.Model",
-        "RollicGames.Pooling.Runtime.Controller"
+        "RollicGames.Pooling.Runtime.Controller",
+        "RollicGames.ColorBlockJamClone.Level.Runtime.Presenter"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

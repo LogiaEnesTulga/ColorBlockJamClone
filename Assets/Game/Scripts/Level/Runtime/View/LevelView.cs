@@ -11,6 +11,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
     public interface ILevelView
     {
         void InitializeView(LevelViewData viewData);
+        void SetTimerText(int remainingSeconds);
         void PrepareForReuse();
     }
 
@@ -74,6 +75,11 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             var biggerEdge = width > height ? width : height;
 
             _levelCamera.transform.position = new Vector3(width - 1f, -2f * height, -4.6f * biggerEdge);
+        }
+
+        public void SetTimerText(int remainingSeconds)
+        {
+            _timerText.SetText($"{remainingSeconds / 60:00}:{remainingSeconds % 60:00}");
         }
 
         private void SetLevelText(int level)

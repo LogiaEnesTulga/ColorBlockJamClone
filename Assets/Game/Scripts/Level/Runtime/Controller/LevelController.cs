@@ -14,6 +14,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         [Inject] private readonly LevelModel _levelModel;
         [Inject] private readonly ILevelView _levelView;
         [Inject] private readonly ILevelGridController _gridController;
+        [Inject] private readonly ILevelTimerController _timerController;
+        [Inject] private readonly ILevelFlowController _flowController;
         [Inject] private readonly IPlayerController _playerController;
         [Inject] private readonly IGameSettingsController _gameSettingsController;
         [Inject] private readonly ISceneLoader _sceneLoader;
@@ -48,12 +50,18 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
                 OnRetryButtonClick = OnRetryButtonClicked,
             };
             _levelView.InitializeView(viewData);
+
+            _levelModel.RemainingDuration = 10f;
+            _timerController.InitializeTimer();
         }
 
         private void PrepareForReuse()
         {
             _levelModel.IsLevelStarted = false;
             _levelModel.IsLevelPaused = false;
+
+            _flowController.PrepareForReuse();
+            _timerController.PrepareForReuse();
 
             _levelView.PrepareForReuse();
 

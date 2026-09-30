@@ -1,6 +1,7 @@
 using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Level.Runtime.View;
 using RollicGames.ColorBlockJamClone.Level.Runtime.Controller;
+using RollicGames.ColorBlockJamClone.Level.Runtime.Presenter;
 using RollicGames.Pooling.Runtime.Controller;
 using RollicGames.Pooling.Runtime.View;
 using Zenject;
@@ -50,6 +51,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
             Container.BindInterfacesAndSelfTo<LevelController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelGridController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelMoveController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelTimerController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelTickPresenter>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<LevelFlowController>().AsSingle().NonLazy();
         }
     }
