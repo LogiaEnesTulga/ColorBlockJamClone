@@ -34,6 +34,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
         public void PrepareForReuse()
         {
+            _gridView.PrepareForReuse();
+
             _blockPool.PoolAll();
             _doorPool.PoolAll();
 
