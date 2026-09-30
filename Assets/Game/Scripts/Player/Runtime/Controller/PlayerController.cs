@@ -9,7 +9,7 @@ namespace RollicGames.ColorBlockJamClone.Player.Runtime.Controller
         void InitializePlayer();
         int GetLevel();
         int GetCoin();
-       void SetPlayerData(int level, int coin);
+        void SetPlayerData(int level, int coin);
     }
 
     public class PlayerController : IPlayerController
