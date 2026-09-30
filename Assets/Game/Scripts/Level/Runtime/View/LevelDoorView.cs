@@ -18,22 +18,22 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             switch(direction)
             {
                 case LevelDirection.Up:
-                    transform.localPosition = new Vector3(gridPosition.X * 2f + length -1f, -gridPosition.Y * 2f + 1.4f, 0f);
+                    transform.localPosition = new Vector3(gridPosition.X * 2f + length -1f, -gridPosition.Y * 2f - 0.5f, 0f);
                     transform.localRotation = Quaternion.Euler(0f, 0f , 180f);
                     break;
 
                 case LevelDirection.Down:
-                    transform.localPosition = new Vector3(gridPosition.X * 2f + length -1f, -gridPosition.Y * 2f - 1.4f, 0f);
+                    transform.localPosition = new Vector3(gridPosition.X * 2f + length -1f, -gridPosition.Y * 2f + 0.5f, 0f);
                     transform.localRotation = Quaternion.Euler(0f, 0f , 0f);
                     break;
                 
                 case LevelDirection.Left:
-                    transform.localPosition = new Vector3(gridPosition.X * 2f - 1.4f, -gridPosition.Y * 2f - length + 1, 0f);
+                    transform.localPosition = new Vector3(gridPosition.X * 2f + 0.5f, -gridPosition.Y * 2f - length + 1, 0f);
                     transform.localRotation = Quaternion.Euler(0f, 0f , 270f);
                     break;
                 
                 case LevelDirection.Right:
-                    transform.localPosition = new Vector3(gridPosition.X * 2f + 1.4f, -gridPosition.Y * 2f - length + 1, 0f);
+                    transform.localPosition = new Vector3(gridPosition.X * 2f - 0.5f, -gridPosition.Y * 2f - length + 1, 0f);
                     transform.localRotation = Quaternion.Euler(0f, 0f , 90f);
                     break;
             }

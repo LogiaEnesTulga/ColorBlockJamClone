@@ -24,6 +24,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
         [SerializeField] private TransformViewPool _outerCornerPartPool;
         [SerializeField] private TransformViewPool _innerCornerPartPool;
         [SerializeField] private TransformViewPool _colliderPool;
+        [SerializeField] private TransformViewPool _wallEdgePool;
+        [SerializeField] private TransformViewPool _wallOuterCornerPool;
+        [SerializeField] private TransformViewPool _wallInnerCornerPool;
 
         public override void InstallBindings()
         {
@@ -41,6 +44,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
             Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.OuterCorner).FromInstance(_outerCornerPartPool);
             Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.InnerCorner).FromInstance(_innerCornerPartPool);
             Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.Collider).FromInstance(_colliderPool);
+            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.WallEdge).FromInstance(_wallEdgePool);
+            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.WallOuterCorner).FromInstance(_wallOuterCornerPool);
+            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.WallInnerCorner).FromInstance(_wallInnerCornerPool);
 
             Container.BindInterfacesTo<LevelBlockIdProvider>().AsSingle();
 

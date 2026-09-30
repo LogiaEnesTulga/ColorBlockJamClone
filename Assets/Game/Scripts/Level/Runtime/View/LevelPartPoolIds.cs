@@ -8,5 +8,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         public const string OuterCorner = "LevelOuterCornerPart";
         public const string InnerCorner = "LevelInnerCornerPart";
         public const string Collider = "LevelCollider";
+        public const string WallEdge = "WallEdge";
+        public const string WallOuterCorner = "WallOuterCorner";
+        public const string WallInnerCorner = "WallInnerCorner";
     }
 }

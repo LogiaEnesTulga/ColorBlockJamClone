@@ -25,6 +25,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         [SerializeField] private Transform _blocksParent;
         [SerializeField] private Transform _doorsParent;
 
+        [SerializeField] private LevelWallView _levelWallView;
+
         [SerializeField] private LevelColorsConfig _colorsConfig;
 
         [Inject] private readonly LevelGridModel _gridModel;
@@ -33,12 +35,16 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         [Inject] private readonly IViewPool<LevelBlockObjectView> _blockViewPool;
         [Inject] private readonly IViewPool<LevelDoorView> _doorViewPool;
+
         [Inject(Id = LevelPartPoolIds.GridCell)] private readonly IViewPool<Transform> _gridCellPool;
         [Inject(Id = LevelPartPoolIds.Center)] private readonly IViewPool<Transform> _centerPartPool;
         [Inject(Id = LevelPartPoolIds.Edge)] private readonly IViewPool<Transform> _edgePartPool;
         [Inject(Id = LevelPartPoolIds.OuterCorner)] private readonly IViewPool<Transform> _outerCornerPartPool;
         [Inject(Id = LevelPartPoolIds.InnerCorner)] private readonly IViewPool<Transform> _innerCornerPartPool;
         [Inject(Id = LevelPartPoolIds.Collider)] private readonly IViewPool<Transform> _colliderPool;
+        [Inject(Id = LevelPartPoolIds.WallEdge)] private readonly IViewPool<Transform> _wallEdgePool;
+        [Inject(Id = LevelPartPoolIds.WallOuterCorner)] private readonly IViewPool<Transform> _wallOuterCornerPool;
+        [Inject(Id = LevelPartPoolIds.WallInnerCorner)] private readonly IViewPool<Transform> _wallInnerCornerPool;
 
         private readonly List<LevelDoorView> _doorViews = new();
         
@@ -47,6 +53,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             PrepareGrids();
             PrepareBlocks();
             PrepareDoors();
+            PrepareWalls();
         }
 
         public void PrepareForReuse()
@@ -68,6 +75,10 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
             _doorViewPool.PoolAll();
             _doorViews.Clear();
+
+            _wallEdgePool.PoolAll();
+            _wallOuterCornerPool.PoolAll();
+            _wallInnerCornerPool.PoolAll();
         }
 
         private void PrepareGrids()
@@ -108,6 +119,12 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
                 _doorViews.Add(doorView);
             }
+        }
+
+        private void PrepareWalls()
+        {
+            _levelWallView.GenerateWalls(_gridModel.Cells, _gridModel.Doors.ObjectsByPosition,
+            _wallEdgePool, _wallOuterCornerPool, _wallInnerCornerPool, _colorsConfig.WallColor);
         }
 
         public void MoveBlock(int id, int2 newPoint)

@@ -47,13 +47,17 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         private void CreateMockLevel()
         {
             // TODO : Change here, its mocked Level 1 initializing.
-            _gridModel.Width = 4;
-            _gridModel.Height = 5;
+            _gridModel.Width = 5;
+            _gridModel.Height = 6;
 
             var blueDoor = _doorPool.Spawn();
-            blueDoor.Initialize(new int2(1, 0), 3, LevelObjectColor.Blue, LevelDirection.Up);
+            blueDoor.Initialize(new int2(2, -1), 3, LevelObjectColor.Blue, LevelDirection.Up);
             var purpleDoor = _doorPool.Spawn();
-            purpleDoor.Initialize(new int2(0, 4), 3, LevelObjectColor.Purple, LevelDirection.Down);
+            purpleDoor.Initialize(new int2(0, 6), 3, LevelObjectColor.Purple, LevelDirection.Down);
+            var greenDoor = _doorPool.Spawn();
+            greenDoor.Initialize(new int2(5, 0), 3, LevelObjectColor.Green, LevelDirection.Right);
+            var yellowDoor = _doorPool.Spawn();
+            yellowDoor.Initialize(new int2(-1, 2), 3, LevelObjectColor.Yellow, LevelDirection.Left);
 
             var squareLocalPositions = new List<int2>()
             {
@@ -69,6 +73,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             {
                 for(var y = 0; y < _gridModel.Height; y++)
                 {
+                    if((x == 2 || x == 3 || x == 4) && (y == 3 || y == 4)) continue;
                     _gridModel.Cells.Add(new int2(x, y));
                 }
             }
@@ -77,6 +82,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             AddBlockToGrid(purpleBlock);
             AddDoorToGrid(blueDoor);
             AddDoorToGrid(purpleDoor);
+            AddDoorToGrid(greenDoor);
+            AddDoorToGrid(yellowDoor);
         }
 
         private void AddDoorToGrid(LevelDoorObjectModel doorObject)
