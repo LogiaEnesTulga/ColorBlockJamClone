@@ -45,6 +45,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
                 LevelHeight = _gridController.LevelHeight,
 
                 OnPauseButtonClick = OnPauseButtonClicked,
+                OnRetryButtonClick = OnRetryButtonClicked,
             };
             _levelView.InitializeView(viewData);
         }
@@ -57,6 +58,14 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _levelView.PrepareForReuse();
 
             _gridController.PrepareForReuse();
+        }
+
+        private void OnRetryButtonClicked()
+        {
+            if(_levelModel.IsLevelPaused) return;
+
+            PrepareForReuse();
+            InitializeLevel();
         }
 
         private async void OnPauseButtonClicked()

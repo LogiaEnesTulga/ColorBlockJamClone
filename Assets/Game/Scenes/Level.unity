@@ -1771,6 +1771,7 @@ MonoBehaviour:
   _levelText: {fileID: 1607276732}
   _timerText: {fileID: 513694121}
   _pauseButton: {fileID: 1473396902}
+  _retryButton: {fileID: 57345146}
   _levelCamera: {fileID: 78322891}
   _popupParent: {fileID: 1127465916}
 --- !u!4 &1087033603

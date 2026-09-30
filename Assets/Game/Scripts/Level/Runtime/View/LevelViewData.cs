@@ -13,5 +13,6 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         // TODO : Add here Level Grid Data
 
         public Action OnPauseButtonClick;
+        public Action OnRetryButtonClick;
     }
 }

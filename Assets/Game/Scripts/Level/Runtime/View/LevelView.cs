@@ -21,6 +21,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         [SerializeField] private TMP_Text _timerText;
 
         [SerializeField] private Button _pauseButton;
+        [SerializeField] private Button _retryButton;
 
         [SerializeField] private Camera _levelCamera;
 
@@ -29,6 +30,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         [Inject] private readonly IPopupPresenter _popupPresenter;
 
         private Action _onPauseButtonClick;
+        private Action _onRetryButtonClick;
 
         public Transform PopupParent => _popupParent;
 
@@ -53,12 +55,18 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         {
             _onPauseButtonClick += viewData.OnPauseButtonClick;
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
+
+            _onRetryButtonClick += viewData.OnRetryButtonClick;
+            _retryButton.onClick.AddListener(OnRetryButtonClicked);
         }
 
         private void RemoveListeners()
         {
             _onPauseButtonClick = null;
             _pauseButton.onClick.RemoveAllListeners();
+
+            _onRetryButtonClick = null;
+            _retryButton.onClick.RemoveAllListeners();
         }
 
         private void PrepareCamera(int width, int height)
@@ -81,6 +89,11 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         private void OnPauseButtonClicked()
         {
             _onPauseButtonClick?.Invoke();
+        }
+
+        private void OnRetryButtonClicked()
+        {
+            _onRetryButtonClick?.Invoke();
         }
     }
 }
