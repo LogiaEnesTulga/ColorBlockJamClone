@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using RollicGames.Math.Runtime.Model;
+using RollicGames.Pooling.Runtime.Controller;
 using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Level.Runtime.View;
 using Zenject;
@@ -11,12 +13,15 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         public int LevelHeight { get; }
 
         void InitializeGrid();
+        void PrepareForReuse();
     }
 
     public class LevelGridController : ILevelGridController
     {
         [Inject] private readonly LevelGridModel _gridModel;
         [Inject] private readonly ILevelGridView _gridView;
+        [Inject] private readonly IObjectPool<LevelBlockObjectModel> _blockPool;
+        [Inject] private readonly IObjectPool<LevelDoorObjectModel> _doorPool;
 
         public int LevelWidth => _gridModel.Width;
         public int LevelHeight => _gridModel.Height;
@@ -27,28 +32,36 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _gridView.InitializeView();
         }
 
+        public void PrepareForReuse()
+        {
+            _blockPool.PoolAll();
+            _doorPool.PoolAll();
+
+            _gridModel.Cells.Clear();
+            _gridModel.Blocks.Clear();
+            _gridModel.Doors.Clear();
+        }
+
         private void CreateMockLevel()
         {
             // TODO : Change here, its mocked Level 1 initializing.
             _gridModel.Width = 4;
             _gridModel.Height = 5;
 
-            _gridModel.Cells.Clear();
-            _gridModel.Blocks.Clear();
-            _gridModel.Doors.Clear();
+            var blueDoor = _doorPool.Spawn();
+            blueDoor.Initialize(new int2(1, 0), 3, LevelObjectColor.Blue, LevelDirection.Up);
+            var purpleDoor = _doorPool.Spawn();
+            purpleDoor.Initialize(new int2(0, 4), 3, LevelObjectColor.Purple, LevelDirection.Down);
 
-            var blueDoor = new LevelDoorObjectModel(new int2(1, 0), 3, LevelObjectColor.Blue, LevelDirection.Up);
-            var purpleDoor = new LevelDoorObjectModel(new int2(0, 4), 3, LevelObjectColor.Purple, LevelDirection.Down);
-            var blueBlock = new LevelBlockObjectModel(new int2(2, 1), LevelObjectColor.Blue, new()
+            var squareLocalPositions = new List<int2>()
             {
                 new (0, 0), new (1, 0),
                 new (0, 1), new (1, 1)
-            });
-            var purpleBlock = new LevelBlockObjectModel(new int2(0, 2), LevelObjectColor.Purple, new()
-            {
-                new (0, 0), new (1, 0),
-                new (0, 1), new (1, 1)
-            });
+            };
+            var blueBlock = _blockPool.Spawn();
+            blueBlock.Initialize(new int2(2, 1), LevelObjectColor.Blue, squareLocalPositions);
+            var purpleBlock = _blockPool.Spawn();
+            purpleBlock.Initialize(new int2(0, 2), LevelObjectColor.Purple, squareLocalPositions);
 
             for(var x = 0; x < _gridModel.Width; x++)
             {

@@ -1,8 +1,7 @@
 {
-    "name": "RollicGames.ColorBlockJamClone.Level.Runtime.Model",
+    "name": "RollicGames.Pooling.Runtime.Controller",
     "rootNamespace": "",
     "references": [
-        "GUID:5b373de0b0f64d13b3e2b628a8f8bf96",
         "RollicGames.Pooling.Runtime.Model"
     ],
     "includePlatforms": [],

@@ -55,6 +55,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _levelModel.IsLevelPaused = false;
 
             _levelView.PrepareForReuse();
+
+            _gridController.PrepareForReuse();
         }
 
         private async void OnPauseButtonClicked()

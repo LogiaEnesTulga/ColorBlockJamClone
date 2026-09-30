@@ -1,6 +1,7 @@
 using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Level.Runtime.View;
 using RollicGames.ColorBlockJamClone.Level.Runtime.Controller;
+using RollicGames.Pooling.Runtime.Controller;
 using Zenject;
 using UnityEngine;
 
@@ -16,6 +17,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
         {
             Container.Bind<LevelModel>().AsSingle().NonLazy();
             Container.Bind<LevelGridModel>().AsSingle().NonLazy();
+
+            Container.Bind<IObjectPool<LevelBlockObjectModel>>().FromMethod(_ => new ObjectPool<LevelBlockObjectModel>(() => new LevelBlockObjectModel())).AsSingle();
+            Container.Bind<IObjectPool<LevelDoorObjectModel>>().FromMethod(_ => new ObjectPool<LevelDoorObjectModel>(() => new LevelDoorObjectModel())).AsSingle();
 
             Container.BindInterfacesTo<LevelView>().FromInstance(_levelView).AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelGridView>().FromInstance(_levelGridView).AsSingle().NonLazy();

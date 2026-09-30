@@ -10,16 +10,24 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
         public LevelObjectColor Color => _doorColor;
         public LevelDirection AbsorbDirection => _doorAbsorbDirection;
 
-        private readonly int _doorLength;
-        private readonly LevelObjectColor _doorColor;
-        private readonly LevelDirection _doorAbsorbDirection;
+        private int _doorLength;
+        private LevelObjectColor _doorColor;
+        private LevelDirection _doorAbsorbDirection;
 
-        public LevelDoorObjectModel(int2 gridPosition, int doorLength,
-        LevelObjectColor doorColor, LevelDirection doorAbsorbDirection) : base(gridPosition)
+        public void Initialize(int2 gridPosition, int doorLength, LevelObjectColor doorColor, LevelDirection doorAbsorbDirection)
         {
+            _gridPosition = gridPosition;
             _doorLength = doorLength;
             _doorColor = doorColor;
             _doorAbsorbDirection = doorAbsorbDirection;
+        }
+
+        public override void OnReturnedToPool()
+        {
+            _gridPosition = int2.Zero;
+            _doorLength = 0;
+            _doorColor = default;
+            _doorAbsorbDirection = default;
         }
     }
 }

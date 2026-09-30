@@ -5,7 +5,9 @@
         "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
         "GUID:6da024acebe30994391f4aa11712b0ab",
         "GUID:aed577f2bc3caf24e858234108dfffc8",
-        "GUID:398c0f7d4fa077c41b02eaacc5ca3c86"
+        "GUID:398c0f7d4fa077c41b02eaacc5ca3c86",
+        "RollicGames.Pooling.Runtime.Model",
+        "RollicGames.Pooling.Runtime.Controller"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

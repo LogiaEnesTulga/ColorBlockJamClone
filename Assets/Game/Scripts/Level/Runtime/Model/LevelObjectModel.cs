@@ -1,32 +1,32 @@
 using RollicGames.Math.Runtime.Model;
+using RollicGames.Pooling.Runtime.Model;
 
 namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
 {
-    public class LevelObjectModel
+    public class LevelObjectModel : IPoolObject
     {
-        public static readonly LevelObjectModel EmptySpace = new(int2.Zero);
+        public static readonly LevelObjectModel EmptySpace = new();
 
         public virtual LevelObjectType ObjectType => LevelObjectType.None;
 
-        public int Id => _id;
+        public int PoolId => _poolId;
+
         public int2 GridPosition => _gridPosition;
 
-        protected int _id;
-        protected int2 _gridPosition;
-        
-        public LevelObjectModel(int2 gridPosition)
-        {
-            _gridPosition = gridPosition;
-        }
 
-        public void SetId(int id)
-        {
-            _id = id;
-        }
+        private int _poolId;
+        protected int2 _gridPosition;
 
         public void SetPosition(int2 gridPosition)
         {
             _gridPosition = gridPosition;
         }
+
+        public void SetPoolId(int poolId)
+        {
+            _poolId = poolId;
+        }
+
+        public virtual void OnReturnedToPool() {}
     }
 }

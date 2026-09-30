@@ -11,20 +11,29 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
 
         public bool IsActive => _isActive;
 
-        private readonly LevelObjectColor _color;
-        private readonly List<int2> _blocksLocalPositions;
+        private readonly List<int2> _blocksLocalPositions = new();
 
+        private LevelObjectColor _color;
         private bool _isActive = true;
 
-        public LevelBlockObjectModel(int2 gridPosition, LevelObjectColor color, List<int2> blocksLocalPositions) : base(gridPosition)
+        public void Initialize(int2 gridPosition, LevelObjectColor color, IReadOnlyList<int2> blocksLocalPositions)
         {
+            _gridPosition = gridPosition;
             _color = color;
-            _blocksLocalPositions = blocksLocalPositions;
+            _blocksLocalPositions.AddRange(blocksLocalPositions);
         }
 
         public void SetActive(bool active)
         {
             _isActive = active;
+        }
+
+        public override void OnReturnedToPool()
+        {
+            _gridPosition = int2.Zero;
+            _color = default;
+            _isActive = true;
+            _blocksLocalPositions.Clear();
         }
     }
 }

@@ -11,7 +11,9 @@
         "GUID:9c7f3fff7b70f1efaf0511d632abe62b",
         "GUID:6da024acebe30994391f4aa11712b0ab",
         "GUID:aed577f2bc3caf24e858234108dfffc8",
-        "GUID:eb43fc45a8cc49849a0b28ae125990b2"
+        "GUID:eb43fc45a8cc49849a0b28ae125990b2",
+        "RollicGames.Pooling.Runtime.Model",
+        "RollicGames.Pooling.Runtime.Controller"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

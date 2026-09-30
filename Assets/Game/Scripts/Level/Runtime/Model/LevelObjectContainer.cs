@@ -10,10 +10,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
 
         public void AddObjectWithId(T obj)
         {
-            var id = ObjectsById.Count;
-            obj.SetId(id);
-
-            ObjectsById.Add(id, obj);
+            ObjectsById.Add(obj.PoolId, obj);
         }
 
         public void Clear()
