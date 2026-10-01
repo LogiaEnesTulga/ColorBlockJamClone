@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "levelId": 4,
+  "duration": 300.0,
+  "grid": {
+    "width": 5,
+    "height": 6,
+    "cells": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 2
+      },
+      {
+        "x": 0,
+        "y": 3
+      },
+      {
+        "x": 0,
+        "y": 4
+      },
+      {
+        "x": 0,
+        "y": 5
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 2
+      },
+      {
+        "x": 1,
+        "y": 3
+      },
+      {
+        "x": 1,
+        "y": 4
+      },
+      {
+        "x": 1,
+        "y": 5
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": 2,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": 2
+      },
+      {
+        "x": 2,
+        "y": 3
+      },
+      {
+        "x": 2,
+        "y": 4
+      },
+      {
+        "x": 2,
+        "y": 5
+      },
+      {
+        "x": 3,
+        "y": 0
+      },
+      {
+        "x": 3,
+        "y": 1
+      },
+      {
+        "x": 3,
+        "y": 2
+      },
+      {
+        "x": 3,
+        "y": 3
+      },
+      {
+        "x": 3,
+        "y": 4
+      },
+      {
+        "x": 3,
+        "y": 5
+      },
+      {
+        "x": 4,
+        "y": 0
+      },
+      {
+        "x": 4,
+        "y": 1
+      },
+      {
+        "x": 4,
+        "y": 2
+      },
+      {
+        "x": 4,
+        "y": 3
+      },
+      {
+        "x": 4,
+        "y": 4
+      },
+      {
+        "x": 4,
+        "y": 5
+      }
+    ]
+  },
+  "blocks": [
+    {
+      "id": 1,
+      "type": "Block",
+      "color": "DarkBlue",
+      "position": {
+        "x": 0,
+        "y": 1
+      },
+      "localPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "properties": {}
+    },
+    {
+      "id": 2,
+      "type": "Block",
+      "color": "Orange",
+      "position": {
+        "x": 2,
+        "y": 2
+      },
+      "localPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "properties": {}
+    },
+    {
+      "id": 3,
+      "type": "Block",
+      "color": "Yellow",
+      "position": {
+        "x": 3,
+        "y": 3
+      },
+      "localPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "properties": {}
+    }
+  ],
+  "doors": [
+    {
+      "id": 1,
+      "type": "Door",
+      "color": "Yellow",
+      "position": {
+        "x": 0,
+        "y": -1
+      },
+      "length": 2,
+      "absorbDirection": "Up",
+      "properties": {}
+    },
+    {
+      "id": 2,
+      "type": "Door",
+      "color": "Orange",
+      "position": {
+        "x": -1,
+        "y": 0
+      },
+      "length": 2,
+      "absorbDirection": "Left",
+      "properties": {}
+    },
+    {
+      "id": 3,
+      "type": "Door",
+      "color": "Orange",
+      "position": {
+        "x": 5,
+        "y": 4
+      },
+      "length": 2,
+      "absorbDirection": "Right",
+      "properties": {}
+    },
+    {
+      "id": 4,
+      "type": "Door",
+      "color": "DarkBlue",
+      "position": {
+        "x": 3,
+        "y": 6
+      },
+      "length": 2,
+      "absorbDirection": "Down",
+      "properties": {}
+    }
+  ]
+}

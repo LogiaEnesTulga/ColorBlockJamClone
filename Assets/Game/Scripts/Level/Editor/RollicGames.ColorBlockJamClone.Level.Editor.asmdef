@@ -1,0 +1,23 @@
+{
+    "name": "RollicGames.ColorBlockJamClone.Level.Editor",
+    "rootNamespace": "",
+    "references": [
+        "RollicGames.ColorBlockJamClone.Level.Runtime.Model",
+        "RollicGames.ColorBlockJamClone.Level.Runtime.View",
+        "RollicGames.Math.Runtime.Model",
+        "RollicGames.Pooling.Runtime.Model"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

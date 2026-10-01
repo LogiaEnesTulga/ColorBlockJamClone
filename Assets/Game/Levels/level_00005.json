@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "levelId": 5,
+  "duration": 300.0,
+  "grid": {
+    "width": 5,
+    "height": 6,
+    "cells": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 2
+      },
+      {
+        "x": 0,
+        "y": 3
+      },
+      {
+        "x": 0,
+        "y": 4
+      },
+      {
+        "x": 0,
+        "y": 5
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 2
+      },
+      {
+        "x": 1,
+        "y": 3
+      },
+      {
+        "x": 1,
+        "y": 4
+      },
+      {
+        "x": 1,
+        "y": 5
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": 2,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": 2
+      },
+      {
+        "x": 2,
+        "y": 3
+      },
+      {
+        "x": 2,
+        "y": 4
+      },
+      {
+        "x": 2,
+        "y": 5
+      },
+      {
+        "x": 3,
+        "y": 0
+      },
+      {
+        "x": 3,
+        "y": 1
+      },
+      {
+        "x": 3,
+        "y": 2
+      },
+      {
+        "x": 3,
+        "y": 3
+      },
+      {
+        "x": 3,
+        "y": 4
+      },
+      {
+        "x": 3,
+        "y": 5
+      },
+      {
+        "x": 4,
+        "y": 0
+      },
+      {
+        "x": 4,
+        "y": 1
+      },
+      {
+        "x": 4,
+        "y": 2
+      },
+      {
+        "x": 4,
+        "y": 3
+      },
+      {
+        "x": 4,
+        "y": 4
+      },
+      {
+        "x": 4,
+        "y": 5
+      }
+    ]
+  },
+  "blocks": [
+    {
+      "id": 1,
+      "type": "Block",
+      "color": "Blue",
+      "position": {
+        "x": 2,
+        "y": 0
+      },
+      "localPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ],
+      "properties": {}
+    },
+    {
+      "id": 2,
+      "type": "Block",
+      "color": "Green",
+      "position": {
+        "x": 0,
+        "y": 2
+      },
+      "localPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "properties": {}
+    },
+    {
+      "id": 3,
+      "type": "Block",
+      "color": "Purple",
+      "position": {
+        "x": 3,
+        "y": 2
+      },
+      "localPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "properties": {}
+    },
+    {
+      "id": 4,
+      "type": "Block",
+      "color": "Orange",
+      "position": {
+        "x": 1,
+        "y": 4
+      },
+      "localPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        }
+      ],
+      "properties": {}
+    },
+    {
+      "id": 5,
+      "type": "Block",
+      "color": "Red",
+      "position": {
+        "x": 1,
+        "y": 5
+      },
+      "localPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        }
+      ],
+      "properties": {}
+    }
+  ],
+  "doors": [
+    {
+      "id": 1,
+      "type": "Door",
+      "color": "Purple",
+      "position": {
+        "x": 0,
+        "y": -1
+      },
+      "length": 2,
+      "absorbDirection": "Up",
+      "properties": {}
+    },
+    {
+      "id": 2,
+      "type": "Door",
+      "color": "Green",
+      "position": {
+        "x": 3,
+        "y": -1
+      },
+      "length": 2,
+      "absorbDirection": "Up",
+      "properties": {}
+    },
+    {
+      "id": 3,
+      "type": "Door",
+      "color": "Orange",
+      "position": {
+        "x": -1,
+        "y": 4
+      },
+      "length": 2,
+      "absorbDirection": "Left",
+      "properties": {}
+    },
+    {
+      "id": 4,
+      "type": "Door",
+      "color": "Red",
+      "position": {
+        "x": 5,
+        "y": 4
+      },
+      "length": 2,
+      "absorbDirection": "Right",
+      "properties": {}
+    },
+    {
+      "id": 5,
+      "type": "Door",
+      "color": "Blue",
+      "position": {
+        "x": 1,
+        "y": 6
+      },
+      "length": 3,
+      "absorbDirection": "Down",
+      "properties": {}
+    }
+  ]
+}
