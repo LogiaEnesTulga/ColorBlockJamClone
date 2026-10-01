@@ -3980,6 +3980,7 @@ MonoBehaviour:
   _levelView: {fileID: 1087033602}
   _levelGridView: {fileID: 571878455}
   _levelInputView: {fileID: 1246977016}
+  _levelsConfig: {fileID: 11400000, guid: b31b5c7acd8dbc143850de6b7e453e9d, type: 2}
   _blockViewPool: {fileID: 1769569755}
   _doorViewPool: {fileID: 248436426}
   _gridCellPool: {fileID: 40568472}

@@ -14,6 +14,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
     {
         [Inject] private readonly LevelModel _levelModel;
         [Inject] private readonly ILevelView _levelView;
+        [Inject] private readonly ILevelLoadController _levelLoadController;
         [Inject] private readonly ILevelGridController _gridController;
         [Inject] private readonly LevelGridModel _gridModel;
         [Inject] private readonly ILevelGoalController _goalController;
@@ -48,12 +49,15 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
         private void InitializeLevel()
         {
+            var playerLevel = _playerController.GetLevel();
+            
+            _levelLoadController.LoadLevel(playerLevel);
             _gridController.InitializeGrid();
             _goalController.AddBlockGoal(_gridModel.Blocks.ObjectsById.Count);
 
             var viewData = new LevelViewData()
             {
-                PlayerLevel = _playerController.GetLevel(),
+                PlayerLevel = playerLevel,
                 PlayerCoinAmount = _playerController.GetCoin(),
 
                 LevelWidth = _gridController.LevelWidth,
@@ -83,6 +87,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _levelView.PrepareForReuse();
 
             _gridController.PrepareForReuse();
+            _levelLoadController.PrepareForReuse();
         }
 
         private void ResetCancellationToken()

@@ -15,6 +15,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
         [SerializeField] private LevelView _levelView;
         [SerializeField] private LevelGridView _levelGridView;
         [SerializeField] private LevelInputView _levelInputView;
+        [SerializeField] private LevelsConfig _levelsConfig;
 
         [Header("View Pools")]
         [SerializeField] private LevelBlockObjectViewPool _blockViewPool;
@@ -58,6 +59,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
             Container.BindInterfacesTo<LevelInputView>().FromInstance(_levelInputView).AsSingle().NonLazy();
 
             Container.BindInterfacesAndSelfTo<LevelController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelLoadController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelGridController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelFailPopupController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelCompletePopupController>().AsSingle().NonLazy();
@@ -67,6 +69,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
             Container.BindInterfacesTo<LevelTimerController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelTickPresenter>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<LevelFlowController>().AsSingle().NonLazy();
+
+            Container.BindInterfacesTo<LevelsConfig>().FromInstance(_levelsConfig).AsSingle().NonLazy();
         }
     }
 }
