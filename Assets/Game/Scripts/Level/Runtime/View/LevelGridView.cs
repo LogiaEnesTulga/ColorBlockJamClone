@@ -1,7 +1,9 @@
-using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using RollicGames.Math.Runtime.Model;
-using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
+using RollicGames.Common.Runtime.View;
 using RollicGames.Pooling.Runtime.View;
+using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 using Zenject;
 using UnityEngine;
 
@@ -9,12 +11,13 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 {
     public interface ILevelGridView
     {
-        void InitializeView();
-        void PrepareForReuse();
-        void MoveBlock(int id, int2 newPoint);
-        void BeginDragBlock(int id);
-        void DragBlock(int id, float2 worldDelta, bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown);
-        void EndDragBlock(int id);
+        public void InitializeView();
+        public void PrepareForReuse();
+        public void MoveBlock(int id, int2 newPoint);
+        public void BeginDragBlock(int id);
+        public void DragBlock(int id, float2 worldDelta, bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown);
+        public void EndDragBlock(int id);
+        public UniTask StartAbsorbingBlockAnimation(int doorId, int blockId, int2 lastPosition, LevelDirection direction, CancellationTokenSource cancellationToken);
     }
 
     public class LevelGridView : MonoBehaviour, ILevelGridView
@@ -30,23 +33,24 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         [SerializeField] private LevelColorsConfig _colorsConfig;
 
         [Inject] private readonly LevelGridModel _gridModel;
-        [Inject] private readonly ILevelBlockIdProvider _blockIdProvider;
-        [Inject] private readonly ILevelBlockIdRegistry _blockIdRegistry;
+        [Inject] private readonly IIdViewProvider<LevelBlockObjectView> _blockIdProvider;
+        [Inject] private readonly IIdViewRegistry<LevelBlockObjectView> _blockIdRegistry;
+        [Inject] private readonly IIdViewProvider<LevelDoorView> _doorIdProvider;
+        [Inject] private readonly IIdViewRegistry<LevelDoorView> _doorIdRegistry;
 
         [Inject] private readonly IViewPool<LevelBlockObjectView> _blockViewPool;
         [Inject] private readonly IViewPool<LevelDoorView> _doorViewPool;
 
-        [Inject(Id = LevelPartPoolIds.GridCell)] private readonly IViewPool<Transform> _gridCellPool;
-        [Inject(Id = LevelPartPoolIds.Center)] private readonly IViewPool<Transform> _centerPartPool;
-        [Inject(Id = LevelPartPoolIds.Edge)] private readonly IViewPool<Transform> _edgePartPool;
-        [Inject(Id = LevelPartPoolIds.OuterCorner)] private readonly IViewPool<Transform> _outerCornerPartPool;
-        [Inject(Id = LevelPartPoolIds.InnerCorner)] private readonly IViewPool<Transform> _innerCornerPartPool;
+        [Inject(Id = LevelPartPoolIds.GridCell)] private readonly IViewPool<Renderer> _gridCellPool;
+        [Inject(Id = LevelPartPoolIds.Center)] private readonly IViewPool<Renderer> _centerPartPool;
+        [Inject(Id = LevelPartPoolIds.Edge)] private readonly IViewPool<Renderer> _edgePartPool;
+        [Inject(Id = LevelPartPoolIds.OuterCorner)] private readonly IViewPool<Renderer> _outerCornerPartPool;
+        [Inject(Id = LevelPartPoolIds.InnerCorner)] private readonly IViewPool<Renderer> _innerCornerPartPool;
         [Inject(Id = LevelPartPoolIds.Collider)] private readonly IViewPool<Transform> _colliderPool;
-        [Inject(Id = LevelPartPoolIds.WallEdge)] private readonly IViewPool<Transform> _wallEdgePool;
-        [Inject(Id = LevelPartPoolIds.WallOuterCorner)] private readonly IViewPool<Transform> _wallOuterCornerPool;
-        [Inject(Id = LevelPartPoolIds.WallInnerCorner)] private readonly IViewPool<Transform> _wallInnerCornerPool;
+        [Inject(Id = LevelPartPoolIds.WallEdge)] private readonly IViewPool<Renderer> _wallEdgePool;
+        [Inject(Id = LevelPartPoolIds.WallOuterCorner)] private readonly IViewPool<Renderer> _wallOuterCornerPool;
+        [Inject(Id = LevelPartPoolIds.WallInnerCorner)] private readonly IViewPool<Renderer> _wallInnerCornerPool;
 
-        private readonly List<LevelDoorView> _doorViews = new();
         
         public void InitializeView()
         {
@@ -58,7 +62,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         public void PrepareForReuse()
         {
-            foreach(var blockView in _blockIdProvider.BlockViews)
+            foreach(var blockView in _blockIdProvider.Views)
             {
                 blockView.ResetView();
             }
@@ -74,7 +78,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             _gridCellPool.PoolAll();
 
             _doorViewPool.PoolAll();
-            _doorViews.Clear();
+            _doorIdRegistry.Clear();
 
             _wallEdgePool.PoolAll();
             _wallOuterCornerPool.PoolAll();
@@ -88,7 +92,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             foreach(var cell in _gridModel.Cells)
             {
                 var createdMesh = _gridCellPool.Spawn(_gridParent);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, gridColor);
+                LevelViewHelper.ApplyColorProperty(createdMesh, gridColor);
                 createdMesh.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
                 createdMesh.transform.localPosition = new Vector3(cell.X, -cell.Y, 0f) * _cornerLength;
             }
@@ -117,7 +121,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var doorView = _doorViewPool.Spawn(_doorsParent);
                 doorView.InitializeView(door.GridPosition, door.AbsorbDirection, door.Length, doorColor, doorArrowColor);
 
-                _doorViews.Add(doorView);
+                _doorIdRegistry.Register(door.Id, doorView);
             }
         }
 
@@ -129,24 +133,39 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         public void MoveBlock(int id, int2 newPoint)
         {
-            if(!_blockIdProvider.TryGetBlockView(id, out var blockView)) return;
+            if(!_blockIdProvider.TryGetView(id, out var blockView)) return;
 
             blockView.MoveToPoint(newPoint);
         }
 
         public void BeginDragBlock(int id)
         {
-            if(_blockIdProvider.TryGetBlockView(id, out var blockView)) blockView.BeginDrag();
+            if(_blockIdProvider.TryGetView(id, out var blockView)) blockView.BeginDrag();
         }
 
         public void DragBlock(int id, float2 worldDelta, bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown)
         {
-            if(_blockIdProvider.TryGetBlockView(id, out var blockView)) blockView.DragByWorldDelta(new Vector3(worldDelta.X, worldDelta.Y, 0f), canMoveLeft, canMoveRight, canMoveUp, canMoveDown);
+            if(_blockIdProvider.TryGetView(id, out var blockView)) blockView.DragByWorldDelta(new Vector3(worldDelta.X, worldDelta.Y, 0f), canMoveLeft, canMoveRight, canMoveUp, canMoveDown);
         }
 
         public void EndDragBlock(int id)
         {
-            if(_blockIdProvider.TryGetBlockView(id, out var blockView)) blockView.EndDrag();
+            if(_blockIdProvider.TryGetView(id, out var blockView)) blockView.EndDrag();
         }
+
+        public async UniTask StartAbsorbingBlockAnimation(int doorId, int blockId, int2 lastPosition, LevelDirection direction, CancellationTokenSource cancellationToken)
+        {
+            if(!_doorIdProvider.TryGetView(doorId, out var doorView)) return;
+            if(!_blockIdProvider.TryGetView(blockId, out var blockView)) return;
+
+            doorView.SetDoorOpen();
+
+            var clippingLimit = direction is LevelDirection.Up or LevelDirection.Down ? doorView.transform.position.y : doorView.transform.position.x;
+            await blockView.StartAbsorbingAnimation(lastPosition, direction, clippingLimit, cancellationToken);
+            if(cancellationToken.IsCancellationRequested) return;
+
+            await doorView.StartClosingAnimation();
+        }
+
     }
 }

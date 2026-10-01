@@ -9,7 +9,8 @@
         "RollicGames.ColorBlockJamClone.Level.Runtime.Presenter",
         "RollicGames.Pooling.Runtime.View",
         "RollicGames.Pooling.Runtime.Model",
-        "RollicGames.Pooling.Runtime.Controller"
+        "RollicGames.Pooling.Runtime.Controller",
+        "RollicGames.Common.Runtime.View"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

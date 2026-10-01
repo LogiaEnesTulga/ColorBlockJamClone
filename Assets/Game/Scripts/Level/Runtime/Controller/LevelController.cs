@@ -37,6 +37,11 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             InitializeLevel();
         }
 
+        public void OnSceneDeactivated()
+        {
+            ResetCancellationToken();
+        }
+
         private void InitializeLevel()
         {
             _gridController.InitializeGrid();
@@ -50,7 +55,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
                 LevelHeight = _gridController.LevelHeight,
 
                 OnPauseButtonClick = OnPauseButtonClicked,
-                OnRetryButtonClick = RestartLevel,
+                OnRetryButtonClick = OnRestartButtonClicked,
             };
             _levelView.InitializeView(viewData);
 
@@ -62,6 +67,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         {
             _levelModel.IsLevelStarted = false;
             _levelModel.IsLevelPaused = false;
+            _levelModel.IsLevelFinished = false;
+            ResetCancellationToken();
+            _levelModel.LevelCancellationToken = new();
 
             _flowController.PrepareForReuse();
             _timerController.PrepareForReuse();
@@ -69,6 +77,14 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _levelView.PrepareForReuse();
 
             _gridController.PrepareForReuse();
+        }
+
+        private void ResetCancellationToken()
+        {
+            if(!_levelModel.LevelCancellationToken.IsCancellationRequested)
+            {
+                _levelModel.LevelCancellationToken.Cancel();
+            }
         }
 
         private void RestartLevel()
@@ -94,6 +110,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
         private async void OnPauseButtonClicked()
         {
+            if(_levelModel.IsLevelFinished) return;
+
             _levelModel.IsLevelPaused = true;
 
             var result = await _gameSettingsController.OpenGameSettingsPopupAndWait(true);
@@ -105,6 +123,13 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             }
 
             _levelModel.IsLevelPaused = false;
+        }
+
+        private void OnRestartButtonClicked()
+        {
+            if(_levelModel.IsLevelFinished || _levelModel.IsLevelPaused || !_levelModel.IsLevelStarted) return;
+
+            RestartLevel();
         }
 
         public void Dispose()

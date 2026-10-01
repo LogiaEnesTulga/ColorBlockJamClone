@@ -2,6 +2,7 @@ using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Level.Runtime.View;
 using RollicGames.ColorBlockJamClone.Level.Runtime.Controller;
 using RollicGames.ColorBlockJamClone.Level.Runtime.Presenter;
+using RollicGames.Common.Runtime.View;
 using RollicGames.Pooling.Runtime.Controller;
 using RollicGames.Pooling.Runtime.View;
 using Zenject;
@@ -18,15 +19,15 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
         [Header("View Pools")]
         [SerializeField] private LevelBlockObjectViewPool _blockViewPool;
         [SerializeField] private LevelDoorViewPool _doorViewPool;
-        [SerializeField] private TransformViewPool _gridCellPool;
-        [SerializeField] private TransformViewPool _centerPartPool;
-        [SerializeField] private TransformViewPool _edgePartPool;
-        [SerializeField] private TransformViewPool _outerCornerPartPool;
-        [SerializeField] private TransformViewPool _innerCornerPartPool;
+        [SerializeField] private RendererViewPool _gridCellPool;
+        [SerializeField] private RendererViewPool _centerPartPool;
+        [SerializeField] private RendererViewPool _edgePartPool;
+        [SerializeField] private RendererViewPool _outerCornerPartPool;
+        [SerializeField] private RendererViewPool _innerCornerPartPool;
         [SerializeField] private TransformViewPool _colliderPool;
-        [SerializeField] private TransformViewPool _wallEdgePool;
-        [SerializeField] private TransformViewPool _wallOuterCornerPool;
-        [SerializeField] private TransformViewPool _wallInnerCornerPool;
+        [SerializeField] private RendererViewPool _wallEdgePool;
+        [SerializeField] private RendererViewPool _wallOuterCornerPool;
+        [SerializeField] private RendererViewPool _wallInnerCornerPool;
 
         public override void InstallBindings()
         {
@@ -38,17 +39,18 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
 
             Container.Bind<IViewPool<LevelBlockObjectView>>().FromInstance(_blockViewPool).AsSingle();
             Container.Bind<IViewPool<LevelDoorView>>().FromInstance(_doorViewPool).AsSingle();
-            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.GridCell).FromInstance(_gridCellPool);
-            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.Center).FromInstance(_centerPartPool);
-            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.Edge).FromInstance(_edgePartPool);
-            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.OuterCorner).FromInstance(_outerCornerPartPool);
-            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.InnerCorner).FromInstance(_innerCornerPartPool);
+            Container.Bind<IViewPool<Renderer>>().WithId(LevelPartPoolIds.GridCell).FromInstance(_gridCellPool);
+            Container.Bind<IViewPool<Renderer>>().WithId(LevelPartPoolIds.Center).FromInstance(_centerPartPool);
+            Container.Bind<IViewPool<Renderer>>().WithId(LevelPartPoolIds.Edge).FromInstance(_edgePartPool);
+            Container.Bind<IViewPool<Renderer>>().WithId(LevelPartPoolIds.OuterCorner).FromInstance(_outerCornerPartPool);
+            Container.Bind<IViewPool<Renderer>>().WithId(LevelPartPoolIds.InnerCorner).FromInstance(_innerCornerPartPool);
             Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.Collider).FromInstance(_colliderPool);
-            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.WallEdge).FromInstance(_wallEdgePool);
-            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.WallOuterCorner).FromInstance(_wallOuterCornerPool);
-            Container.Bind<IViewPool<Transform>>().WithId(LevelPartPoolIds.WallInnerCorner).FromInstance(_wallInnerCornerPool);
+            Container.Bind<IViewPool<Renderer>>().WithId(LevelPartPoolIds.WallEdge).FromInstance(_wallEdgePool);
+            Container.Bind<IViewPool<Renderer>>().WithId(LevelPartPoolIds.WallOuterCorner).FromInstance(_wallOuterCornerPool);
+            Container.Bind<IViewPool<Renderer>>().WithId(LevelPartPoolIds.WallInnerCorner).FromInstance(_wallInnerCornerPool);
 
-            Container.BindInterfacesTo<LevelBlockIdProvider>().AsSingle();
+            Container.BindInterfacesTo<IdViewProvider<LevelBlockObjectView>>().AsSingle();
+            Container.BindInterfacesTo<IdViewProvider<LevelDoorView>>().AsSingle();
 
             Container.BindInterfacesTo<LevelView>().FromInstance(_levelView).AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelGridView>().FromInstance(_levelGridView).AsSingle().NonLazy();
@@ -58,6 +60,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
             Container.BindInterfacesTo<LevelGridController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelFailPopupController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelMoveController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelDoorsController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelTimerController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelTickPresenter>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<LevelFlowController>().AsSingle().NonLazy();

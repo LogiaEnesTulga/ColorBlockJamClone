@@ -1,3 +1,4 @@
+using RollicGames.Common.Runtime.View;
 using System;
 using RollicGames.Math.Runtime.Model;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
     {
         [SerializeField] private Camera _levelCamera;
 
-        [Inject] private readonly ILevelBlockIdProvider _blockIdProvider;
+        [Inject] private readonly IIdViewProvider<LevelBlockObjectView> _blockIdProvider;
 
         private bool _isTouched = false;
         private int _lastTouchId;
@@ -112,7 +113,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var clickedBlock = parent.GetComponent<LevelBlockObjectView>();
                 if(clickedBlock == null) return;
 
-                if(!_blockIdProvider.TryGetBlockId(clickedBlock, out var blockId)) return;
+                if(!_blockIdProvider.TryGetId(clickedBlock, out var blockId)) return;
 
                 OnBlockClickStarted?.Invoke(blockId, GetGridPositionOfTouch());
             }

@@ -33,6 +33,8 @@ namespace RollicGames.ColorBlockJamClone.Home.Runtime.Controller
             Initialize();
         }
 
+        public void OnSceneDeactivated() {}
+
         private HomeViewData GetViewData()
         {
             return new HomeViewData()

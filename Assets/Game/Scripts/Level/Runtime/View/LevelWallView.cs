@@ -12,8 +12,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         [SerializeField] private float _cornerLength = 2f;
 
         public void GenerateWalls(HashSet<int2> cellPositions, IReadOnlyDictionary<int2, LevelDoorObjectModel> doors,
-            IViewPool<Transform> edgePartPool, IViewPool<Transform> outerCornerPartPool,
-            IViewPool<Transform> innerCornerPartPool, Color color)
+            IViewPool<Renderer> edgePartPool, IViewPool<Renderer> outerCornerPartPool,
+            IViewPool<Renderer> innerCornerPartPool, Color color)
         {
             foreach(var cellPosition in cellPositions)
             {
@@ -30,8 +30,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         private void InitializeCornerOfPoint(IReadOnlyCollection<int2> cellPositions, IReadOnlyDictionary<int2, LevelDoorObjectModel> doors,
          int2 cellPosition, int2 horizontalCheck, int2 verticalCheck, float rotationAngle, Color color,
-            IViewPool<Transform> edgePartPool,IViewPool<Transform> outerCornerPartPool,
-            IViewPool<Transform> innerCornerPartPool)
+            IViewPool<Renderer> edgePartPool,IViewPool<Renderer> outerCornerPartPool,
+            IViewPool<Renderer> innerCornerPartPool)
         {
             var crossCheck = new int2(horizontalCheck.X, verticalCheck.Y);
 
@@ -50,13 +50,13 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                     var otherPart = edgePartPool.Spawn(transform);
                     var noNeedToChangeDegree = (!horizontalNeighbour && horizontalCheck.X != verticalCheck.Y)
                                     || (!verticalNeighbour && horizontalCheck.X == verticalCheck.Y);
-                    LevelViewHelper.ApplyColorProperty(otherPart.gameObject, color);
+                    LevelViewHelper.ApplyColorProperty(otherPart, color);
                     otherPart.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3((horizontalDoor ? 0.25f : 0.75f) * horizontalCheck.X, (verticalDoor ? 0.25f : 0.75f) * -verticalCheck.Y, 0f) * _cornerLength;
                     otherPart.transform.localEulerAngles = new Vector3((rotationAngle + (noNeedToChangeDegree ? 0f : 90f)) % 360f, -90f, -90f);
                 }
 
                 var createdMesh = (verticalDoor || horizontalDoor ? innerCornerPartPool : outerCornerPartPool).Spawn(transform);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, color);
+                LevelViewHelper.ApplyColorProperty(createdMesh, color);
                 createdMesh.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f) * _cornerLength * 0.75f;
                 createdMesh.transform.localEulerAngles = new Vector3(rotationAngle, -90f, -90f);
                 return;
@@ -65,7 +65,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             if(horizontalNeighbour && verticalNeighbour && !crossNeighbour && !crossDoor)
             {
                 var createdMesh = innerCornerPartPool.Spawn(transform);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, color);
+                LevelViewHelper.ApplyColorProperty(createdMesh, color);
                 createdMesh.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f) * _cornerLength * 0.75f;
                 createdMesh.transform.localEulerAngles = new Vector3((rotationAngle + 180f) % 360f, -90f, -90f);
                 return;
@@ -80,7 +80,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var createdMesh = edgePartPool.Spawn(transform);
                 var noNeedToChangeDegree = (!horizontalNeighbour && horizontalCheck.X != verticalCheck.Y)
                                 || (!verticalNeighbour && horizontalCheck.X == verticalCheck.Y);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, color);
+                LevelViewHelper.ApplyColorProperty(createdMesh, color);
                 createdMesh.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3((horizontalNeighbour ? 0.25f : 0.75f) * horizontalCheck.X, (verticalNeighbour ? 0.25f : 0.75f) * -verticalCheck.Y, 0f) * _cornerLength;
                 createdMesh.transform.localEulerAngles = new Vector3((rotationAngle + (noNeedToChangeDegree ? 0f : 90f)) % 360f, -90f, -90f);
                 return;

@@ -1,17 +1,23 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using RollicGames.Math.Runtime.Model;
 using RollicGames.Pooling.Runtime.View;
 using UnityEngine;
 using DG.Tweening;
+using System.Threading;
+using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 
 namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 {
     public class LevelBlockObjectView : MonoBehaviour
     {
         private const float MoveDuration = 0.05f;
+        private const float AbsorbingDuration = 1f;
         private const float BlockedDragLimit = 0.15f;
 
         [SerializeField] private float _cornerLength = 2f;
+        [SerializeField] private Material _defaultMaterial;
+        [SerializeField] private Material _clippingMaterial;
 
         private Color _color;
         private Tween _moveTween;
@@ -19,9 +25,12 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         private Vector3 _targetPosition;
         private Vector3? _dragOrigin;
 
+        private readonly List<Renderer> _blockRenderers = new();
+        private readonly List<Transform> _colliderObjects = new();
+
         public void InitializeView(Color color, IReadOnlyList<int2> localPositions,
-            IViewPool<Transform> centerPartPool, IViewPool<Transform> edgePartPool,
-            IViewPool<Transform> outerCornerPartPool, IViewPool<Transform> innerCornerPartPool,
+            IViewPool<Renderer> centerPartPool, IViewPool<Renderer> edgePartPool,
+            IViewPool<Renderer> outerCornerPartPool, IViewPool<Renderer> innerCornerPartPool,
             IViewPool<Transform> colliderPool)
         {
             _color = color;
@@ -31,6 +40,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var localPosition = localPositions[i];
                 var createdMesh = colliderPool.Spawn(transform);
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
+                _colliderObjects.Add(createdMesh);
 
                 InitializeCornerOfPoint(localPositions, i, int2.Left, int2.Up, 90f,
                 centerPartPool, edgePartPool, outerCornerPartPool, innerCornerPartPool); // Left Up
@@ -41,11 +51,13 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 InitializeCornerOfPoint(localPositions, i, int2.Right, int2.Down, 270f,
                 centerPartPool, edgePartPool, outerCornerPartPool, innerCornerPartPool); // Right Down
             }
+
+            gameObject.SetActive(true);
         }
 
         private void InitializeCornerOfPoint(IReadOnlyList<int2> localPositions, int positionIndex, int2 horizontalCheck, int2 verticalCheck, float rotationAngle,
-            IViewPool<Transform> centerPartPool, IViewPool<Transform> edgePartPool,
-            IViewPool<Transform> outerCornerPartPool, IViewPool<Transform> innerCornerPartPool)
+            IViewPool<Renderer> centerPartPool, IViewPool<Renderer> edgePartPool,
+            IViewPool<Renderer> outerCornerPartPool, IViewPool<Renderer> innerCornerPartPool)
         {
             var localPosition = localPositions[positionIndex];
             var horizontalNeighbour = false;
@@ -82,7 +94,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             if(horizontalNeighbour && secondNeighbour && crossNeighbour)
             {
                 var createdMesh = centerPartPool.Spawn(transform);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, _color);
+                _blockRenderers.Add(createdMesh);
+                LevelViewHelper.ApplyColorProperty(createdMesh, _color);
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
@@ -93,7 +106,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             else if(horizontalNeighbour && secondNeighbour)
             {
                 var createdMesh = innerCornerPartPool.Spawn(transform);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, _color);
+                _blockRenderers.Add(createdMesh);
+                LevelViewHelper.ApplyColorProperty(createdMesh, _color);
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f);
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
@@ -108,7 +122,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 }
 
                 var createdMesh = edgePartPool.Spawn(transform);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, _color);
+                _blockRenderers.Add(createdMesh);
+                LevelViewHelper.ApplyColorProperty(createdMesh, _color);
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(additionalPosition.X, additionalPosition.Y, 0f);
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle + additionalAngle);
             }
@@ -123,14 +138,16 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 }
 
                 var createdMesh = edgePartPool.Spawn(transform);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, _color);
+                _blockRenderers.Add(createdMesh);
+                LevelViewHelper.ApplyColorProperty(createdMesh, _color);
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(additionalPosition.X, additionalPosition.Y, 0f);
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle + additionalAngle);
             }
             else
             {
                 var createdMesh = outerCornerPartPool.Spawn(transform);
-                LevelViewHelper.ApplyColorProperty(createdMesh.gameObject, _color);
+                _blockRenderers.Add(createdMesh);
+                LevelViewHelper.ApplyColorProperty(createdMesh, _color);
                 createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
@@ -141,6 +158,14 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             _moveTween?.Kill();
             _moveTween = null;
             _dragOrigin = null;
+
+            foreach(var renderer in _blockRenderers)
+            {
+                LevelViewHelper.ChangeMaterial(renderer, _defaultMaterial);
+            }
+
+            _blockRenderers.Clear();
+            _colliderObjects.Clear();
         }
 
         public void MoveToPoint(int2 newPoint)
@@ -151,6 +176,33 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             if(_dragOrigin.HasValue) return;
 
             MoveToTarget();
+        }
+
+        public async UniTask StartAbsorbingAnimation(int2 lastPoint, LevelDirection absortDirection, float clippingLimit, CancellationTokenSource cancellationToken)
+        {
+            foreach(var colliderObject in _colliderObjects)
+            {
+                colliderObject.gameObject.SetActive(false);
+            }
+
+            await UniTask.WaitForSeconds(MoveDuration, cancellationToken: cancellationToken.Token); // wait for canceling dragging
+            _moveTween?.Kill();
+
+            if(cancellationToken.IsCancellationRequested) return;
+
+            var directionVector = absortDirection.GetDirectionVector();
+            foreach(var renderer in _blockRenderers)
+            {
+                LevelViewHelper.ChangeMaterial(renderer, _clippingMaterial);
+                LevelViewHelper.ApplyClipProperties(renderer, new Vector2(directionVector.X, -directionVector.Y), clippingLimit);
+            }
+
+            _moveTween = transform.DOLocalMove(new Vector3(lastPoint.X - directionVector.X * 0.5f, -lastPoint.Y + directionVector.Y * 0.5f, 0f) * _cornerLength, AbsorbingDuration);
+            await _moveTween.AsyncWaitForCompletion();
+
+            if(cancellationToken.IsCancellationRequested) return;
+            
+            gameObject.SetActive(false);
         }
 
         public void BeginDrag()

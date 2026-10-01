@@ -1,16 +1,23 @@
 using RollicGames.Math.Runtime.Model;
 using RollicGames.ColorBlockJamClone.Level.Runtime.Model;
 using UnityEngine;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 {
     public class LevelDoorView : MonoBehaviour
     {
+        private const float ClosingDuration = 0.5f;
+
         [SerializeField] private MeshRenderer _doorRenderer;
         [SerializeField] private MeshRenderer _arrowRenderer;
 
+        private Tween closingAnimation;
+
         public void InitializeView(int2 gridPosition, LevelDirection direction, int length, Color color, Color arrowColor)
         {
+            ResetAnimation();
             LevelViewHelper.ApplyColorProperty(_doorRenderer, color);
             LevelViewHelper.ApplyColorProperty(_arrowRenderer, arrowColor);
 
@@ -37,6 +44,31 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                     transform.localRotation = Quaternion.Euler(0f, 0f , 90f);
                     break;
             }
+        }
+
+        public void SetDoorOpen()
+        {
+            ResetAnimation();
+
+            var currentPosition = transform.localPosition;
+            currentPosition.z = 2f;
+            transform.localPosition = currentPosition;
+        }
+
+        public async UniTask StartClosingAnimation()
+        {
+            ResetAnimation();
+            var currentPosition = transform.localPosition;
+            currentPosition.z = 0f;
+            closingAnimation = transform.DOLocalMove(currentPosition, ClosingDuration);
+
+            await closingAnimation.AsyncWaitForCompletion();
+        }
+
+        private void ResetAnimation()
+        {
+            closingAnimation?.Kill();
+            closingAnimation = null;
         }
     }
 }

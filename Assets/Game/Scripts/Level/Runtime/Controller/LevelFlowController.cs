@@ -20,10 +20,12 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         [Inject] private readonly ILevelGridView _levelGridView;
         [Inject] private readonly ILevelInputView _levelInputView;
         [Inject] private readonly ILevelMoveController _moveController;
+        [Inject] private readonly ILevelDoorsController _doorsController;
         [Inject] private readonly ILevelTimerController _timerController;
 
         private float2 _grabWorldPosition;
         private int2 _lastTouchedGridPosition;
+        private int2 _lastDoorCheckPosition;
         private LevelBlockObjectModel _draggingObjectModel = null;
 
         public event Action OnLevelFailed;
@@ -56,48 +58,61 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _draggingObjectModel = null;
         }
 
-        private void TryToMoveBlock(int2 gridPosition)
+        private async void TryToMoveBlock(int2 gridPosition)
         {
             var distance = gridPosition - _lastTouchedGridPosition;
-            if(distance.X == 0 && distance.Y == 0) return;
-
-            var absX = System.Math.Abs(distance.X);
-            var absY = System.Math.Abs(distance.Y);
-
-            var xBigger = absX >= absY;
-            var firstDirection = xBigger ? 
-                                (distance.X > 0 ? LevelDirection.Right : LevelDirection.Left) :
-                                (distance.Y > 0 ? LevelDirection.Down : LevelDirection.Up);
-
-            var hasSecondDirection = xBigger ? absY > 0 : absX > 0;
-            var secondDirection = xBigger ? 
-                                (distance.Y > 0 ? LevelDirection.Down : LevelDirection.Up) :
-                                (distance.X > 0 ? LevelDirection.Right : LevelDirection.Left);
-                                
-                                
-            var isMoved = _moveController.Move(_draggingObjectModel.Id, firstDirection);
-            if(isMoved)
+            if(distance.X != 0 || distance.Y != 0)
             {
-                _lastTouchedGridPosition += firstDirection.GetDirectionVector();
-            }
+                var absX = System.Math.Abs(distance.X);
+                var absY = System.Math.Abs(distance.Y);
 
-            // TODO : Check for absorbing
+                var xBigger = absX >= absY;
+                var firstDirection = xBigger ? 
+                                    (distance.X > 0 ? LevelDirection.Right : LevelDirection.Left) :
+                                    (distance.Y > 0 ? LevelDirection.Down : LevelDirection.Up);
 
-            if(!isMoved && hasSecondDirection)
-            {
-                isMoved = _moveController.Move(_draggingObjectModel.Id, secondDirection);
+                var hasSecondDirection = xBigger ? absY > 0 : absX > 0;
+                var secondDirection = xBigger ? 
+                                    (distance.Y > 0 ? LevelDirection.Down : LevelDirection.Up) :
+                                    (distance.X > 0 ? LevelDirection.Right : LevelDirection.Left);
+                                    
+                                    
+                var isMoved = _moveController.Move(_draggingObjectModel.Id, firstDirection);
                 if(isMoved)
                 {
-                    _lastTouchedGridPosition += secondDirection.GetDirectionVector();
+                    _lastTouchedGridPosition += firstDirection.GetDirectionVector();
                 }
 
-                // TODO : Check for absorbing
+                if(!isMoved && hasSecondDirection)
+                {
+                    isMoved = _moveController.Move(_draggingObjectModel.Id, secondDirection);
+                    if(isMoved)
+                    {
+                        _lastTouchedGridPosition += secondDirection.GetDirectionVector();
+                    }
+                }
+            }
+
+            if(_draggingObjectModel.GridPosition == _lastDoorCheckPosition) return;
+
+            _lastDoorCheckPosition = _draggingObjectModel.GridPosition;
+            if(!_doorsController.TryToAbsorbBlock(_draggingObjectModel.Id, out var absorbAnimationTask)) return;
+
+            // TODO : Check for level is ended here?
+            CancelDragging();
+
+            // TODO : update here
+            var isLevelEnded = false;
+            if(isLevelEnded)
+            {
+                await absorbAnimationTask;
+                // TODO : Open Win Level Popup
             }
         }
 
         private void OnBlockClicked(int blockId, int2 startingTouchGridPosition)
         {
-            if(_levelModel.IsLevelPaused) return;
+            if(_levelModel.IsLevelPaused || _levelModel.IsLevelFinished) return;
 
             if(!_levelGridModel.Blocks.ObjectsById.TryGetValue(blockId, out var blockModel)) return;
             if(!blockModel.IsActive) return;
@@ -108,6 +123,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _draggingObjectModel = blockModel;
             _grabWorldPosition = _levelInputView.TouchWorldPosition;
             _levelGridView.BeginDragBlock(blockId);
+            _lastDoorCheckPosition = new int2(-999, -999);
         }
 
         private void OnTouchMoved(int2 gridPosition)
@@ -115,6 +131,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             if(_levelModel.IsLevelPaused || _draggingObjectModel == null) return;
 
             TryToMoveBlock(gridPosition);
+            if(_draggingObjectModel == null || _levelModel.IsLevelFinished) return;
+
             var id = _draggingObjectModel.Id;
             _levelGridView.DragBlock(id,
                 _levelInputView.TouchWorldPosition - _grabWorldPosition,
@@ -126,10 +144,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
         private void OnTouchEnded()
         {
-            if(_draggingObjectModel == null) return;
-
-            _levelGridView.EndDragBlock(_draggingObjectModel.Id);
-            _draggingObjectModel = null;
+            CancelDragging();
         }
 
         public void Dispose()

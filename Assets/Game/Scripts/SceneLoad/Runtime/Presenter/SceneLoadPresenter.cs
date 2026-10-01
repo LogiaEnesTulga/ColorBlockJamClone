@@ -9,6 +9,7 @@ namespace RollicGames.ColorBlockJamClone.SceneLoad.Runtime.Presenter
         string SceneName { get; }
 
         void OnSceneReactivated();
+        void OnSceneDeactivated();
     }
 
     public interface ISceneLoader
@@ -35,6 +36,11 @@ namespace RollicGames.ColorBlockJamClone.SceneLoad.Runtime.Presenter
             if(_activeSceneName != null)
             {
                 SetSceneObjectsActive(_activeSceneName, false);
+                if(_handlers.TryGetValue(_activeSceneName, out var handler))
+                {
+                    handler.OnSceneDeactivated();
+                }
+
                 _activeSceneName = null;
             }
 

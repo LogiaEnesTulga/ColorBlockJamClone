@@ -3,11 +3,15 @@
     "rootNamespace": "",
     "references": [
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:c1168b5ce740eeb4e88ca93c5cedfa49",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:029c1c1b674aaae47a6841a0b89ad80e",
         "GUID:5b373de0b0f64d13b3e2b628a8f8bf96",
         "GUID:5e74b90e2aa099c41b15e101aeb7f46e",
         "GUID:e346b7179fd2c60418cb23c1bc1c5fa2",
-        "GUID:6da024acebe30994391f4aa11712b0ab",
-        "RollicGames.Pooling.Runtime.View"
+        "GUID:5049ee4c79113d24c961b5d3700b43bc",
+        "GUID:bc1b17888fc6b074e967149e69e306ff",
+        "GUID:6da024acebe30994391f4aa11712b0ab"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
