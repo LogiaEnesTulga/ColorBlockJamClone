@@ -11,13 +11,13 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 {
     public interface ILevelGridView
     {
-        public void InitializeView();
-        public void PrepareForReuse();
-        public void MoveBlock(int id, int2 newPoint);
-        public void BeginDragBlock(int id);
-        public void DragBlock(int id, float2 worldDelta, bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown);
-        public void EndDragBlock(int id);
-        public UniTask StartAbsorbingBlockAnimation(int doorId, int blockId, int2 lastPosition, LevelDirection direction, CancellationTokenSource cancellationToken);
+        void InitializeView();
+        void PrepareForReuse();
+        void MoveBlock(int id, int2 newPoint);
+        void BeginDragBlock(int id);
+        void DragBlock(int id, float2 worldDelta, bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown);
+        void EndDragBlock(int id);
+        UniTask StartAbsorbingBlockAnimation(int doorId, int blockId, int2 lastPosition, LevelDirection direction, CancellationTokenSource cancellationToken);
     }
 
     public class LevelGridView : MonoBehaviour, ILevelGridView

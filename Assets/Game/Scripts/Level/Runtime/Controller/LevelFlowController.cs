@@ -9,6 +9,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
     public interface ILevelFlowController
     {
         event Action OnLevelFailed;
+        event Action OnLevelComplete;
 
         void PrepareForReuse();
     }
@@ -22,6 +23,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         [Inject] private readonly ILevelMoveController _moveController;
         [Inject] private readonly ILevelDoorsController _doorsController;
         [Inject] private readonly ILevelTimerController _timerController;
+        [Inject] private readonly ILevelGoalController _goalController;
 
         private float2 _grabWorldPosition;
         private int2 _lastTouchedGridPosition;
@@ -29,6 +31,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         private LevelBlockObjectModel _draggingObjectModel = null;
 
         public event Action OnLevelFailed;
+        public event Action OnLevelComplete;
 
         public void Initialize()
         {
@@ -98,16 +101,14 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _lastDoorCheckPosition = _draggingObjectModel.GridPosition;
             if(!_doorsController.TryToAbsorbBlock(_draggingObjectModel.Id, out var absorbAnimationTask)) return;
 
-            // TODO : Check for level is ended here?
+            var isLevelFinishedWithThisMove = _goalController.DecreaseBlockGoal(1);
+            _levelModel.IsLevelFinished = isLevelFinishedWithThisMove;
             CancelDragging();
 
-            // TODO : update here
-            var isLevelEnded = false;
-            if(isLevelEnded)
-            {
-                await absorbAnimationTask;
-                // TODO : Open Win Level Popup
-            }
+            if(!isLevelFinishedWithThisMove) return;
+            
+            await absorbAnimationTask;
+            OnLevelComplete?.Invoke();
         }
 
         private void OnBlockClicked(int blockId, int2 startingTouchGridPosition)

@@ -33,6 +33,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
         {
             Container.Bind<LevelModel>().AsSingle().NonLazy();
             Container.Bind<LevelGridModel>().AsSingle().NonLazy();
+            Container.Bind<LevelGoalModel>().AsSingle().NonLazy();
 
             Container.Bind<IObjectPool<LevelBlockObjectModel>>().FromMethod(_ => new ObjectPool<LevelBlockObjectModel>(() => new LevelBlockObjectModel())).AsSingle();
             Container.Bind<IObjectPool<LevelDoorObjectModel>>().FromMethod(_ => new ObjectPool<LevelDoorObjectModel>(() => new LevelDoorObjectModel())).AsSingle();
@@ -59,8 +60,10 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Injection
             Container.BindInterfacesAndSelfTo<LevelController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelGridController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelFailPopupController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelCompletePopupController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelMoveController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelDoorsController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelGoalController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelTimerController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<LevelTickPresenter>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<LevelFlowController>().AsSingle().NonLazy();

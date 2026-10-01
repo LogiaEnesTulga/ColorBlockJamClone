@@ -38,7 +38,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
 
         private void OnTick(float deltaTime)
         {
-            if(!_levelModel.IsLevelStarted || _levelModel.IsLevelPaused 
+            if(!_levelModel.IsLevelStarted || _levelModel.IsLevelPaused || _levelModel.IsLevelFinished
             || _levelModel.RemainingDuration <= 0f) return;
 
             _levelModel.RemainingDuration = _levelModel.RemainingDuration - deltaTime;

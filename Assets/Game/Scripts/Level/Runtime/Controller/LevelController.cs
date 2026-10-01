@@ -15,9 +15,12 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         [Inject] private readonly LevelModel _levelModel;
         [Inject] private readonly ILevelView _levelView;
         [Inject] private readonly ILevelGridController _gridController;
+        [Inject] private readonly LevelGridModel _gridModel;
+        [Inject] private readonly ILevelGoalController _goalController;
         [Inject] private readonly ILevelTimerController _timerController;
         [Inject] private readonly ILevelFlowController _flowController;
         [Inject] private readonly ILevelFailPopupController _failPopupController;
+        [Inject] private readonly ILevelCompletePopupController _completePopupController;
         [Inject] private readonly IPlayerController _playerController;
         [Inject] private readonly IGameSettingsController _gameSettingsController;
         [Inject] private readonly ISceneLoader _sceneLoader;
@@ -28,6 +31,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         {
             _sceneLoader.RegisterHandler(this);
             _flowController.OnLevelFailed += OnLevelFailed;
+            _flowController.OnLevelComplete += OnLevelComplete;
             InitializeLevel();
         }
 
@@ -45,6 +49,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         private void InitializeLevel()
         {
             _gridController.InitializeGrid();
+            _goalController.AddBlockGoal(_gridModel.Blocks.ObjectsById.Count);
 
             var viewData = new LevelViewData()
             {
@@ -72,6 +77,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             _levelModel.LevelCancellationToken = new();
 
             _flowController.PrepareForReuse();
+            _goalController.PrepareForReuse();
             _timerController.PrepareForReuse();
 
             _levelView.PrepareForReuse();
@@ -108,6 +114,23 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
             RestartLevel();
         }
 
+        private async void OnLevelComplete()
+        {
+            var playerLevel = _playerController.GetLevel();
+            var playerCoin = _playerController.GetCoin();
+            _playerController.SetPlayerData(playerLevel + 1, playerCoin + LevelModel.LevelCompleteCoinReward);
+
+            var result = await _completePopupController.OpenLevelCompletePopupAndWait(playerLevel, LevelModel.LevelCompleteCoinReward);
+
+            if(result == LevelCompletePopupResult.ReturnHome)
+            {
+                await _sceneLoader.Load(SceneNameConstants.Home);
+                return;
+            }
+
+            RestartLevel();
+        }
+
         private async void OnPauseButtonClicked()
         {
             if(_levelModel.IsLevelFinished) return;
@@ -135,6 +158,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         public void Dispose()
         {
             _flowController.OnLevelFailed -= OnLevelFailed;
+            _flowController.OnLevelComplete -= OnLevelComplete;
         }
     }
 }
