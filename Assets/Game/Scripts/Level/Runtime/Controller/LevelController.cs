@@ -50,7 +50,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
         private void InitializeLevel()
         {
             var playerLevel = _playerController.GetLevel();
-            
+
             _levelLoadController.LoadLevel(playerLevel);
             _gridController.InitializeGrid();
             _goalController.AddBlockGoal(_gridModel.Blocks.ObjectsById.Count);
@@ -67,8 +67,6 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Controller
                 OnRetryButtonClick = OnRestartButtonClicked,
             };
             _levelView.InitializeView(viewData);
-
-            _levelModel.RemainingDuration = 10f;
             _timerController.InitializeTimer();
         }
 
