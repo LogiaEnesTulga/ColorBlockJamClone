@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface IContextPopupHandler
+namespace RollicGames.UI.Runtime.View
 {
-    public Transform PopupParent { get; }
+    public interface IContextPopupHandler
+    {
+        public Transform PopupParent { get; }
+    }
 }
