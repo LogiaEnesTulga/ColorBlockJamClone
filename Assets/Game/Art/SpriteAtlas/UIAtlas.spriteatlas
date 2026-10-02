@@ -51,7 +51,6 @@ SpriteAtlas:
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
     - 93d31810c9cc3634cad4a5a93821e5a5: 21300000
-    - 3c696140f5d41bd419a98d2be129e180: 21300000
     - 0201f140eca36a24187988208057d7ba: 21300000
     - bf0ed4400f4abdb40bab9c30dcadd56e: 21300000
     - 5bcd0c40643d6a845acfd9e0de171d49: 21300000
@@ -75,7 +74,6 @@ SpriteAtlas:
     - c4350b362e2094342ba9707728b6a8b8: 21300000
     - 4c6c8756a615390409b4c1cb33765d1b: 21300000
     - ff60c396fad00cf4ba63c416d07cd63f: 21300000
-    - 30249927921c7bc4ebff16a99411781f: 21300000
     - e6b43677a918ca543ae5dcb2becc41e2: 21300000
     - 368523a7b7f5a724db2a8d16004ead76: 21300000
     - 9a8681d7dc59a4046b82971b1f41e87e: 21300000
@@ -89,17 +87,14 @@ SpriteAtlas:
     - 5744610c2a321e449b0a250720de39cb: 21300000
     - 9991090cd5baf4343b3b755ac0931f0e: 21300000
     - b5fa756cfd8bb1446bd724d44df20eac: 21300000
-    - a9fbed6ca3d9e7541b9770a0b31df1c3: 21300000
     - fac81f8ce8583c949ba061579773d8c1: 21300000
     - 93dd078da2bd244469adb82faf2afb35: 21300000
-    - 5835569d22a980140962de97248fea39: 21300000
     - 76880fade8130124faef9fb798185ccc: 21300000
     - fb23c32f050fac745b2ec7edb2684211: 21300000
     - c589c56f3365c2841ac142fd665348eb: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 93d31810c9cc3634cad4a5a93821e5a5, type: 3}
-  - {fileID: 21300000, guid: 3c696140f5d41bd419a98d2be129e180, type: 3}
   - {fileID: 21300000, guid: 0201f140eca36a24187988208057d7ba, type: 3}
   - {fileID: 21300000, guid: bf0ed4400f4abdb40bab9c30dcadd56e, type: 3}
   - {fileID: 21300000, guid: 5bcd0c40643d6a845acfd9e0de171d49, type: 3}
@@ -123,7 +118,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c4350b362e2094342ba9707728b6a8b8, type: 3}
   - {fileID: 21300000, guid: 4c6c8756a615390409b4c1cb33765d1b, type: 3}
   - {fileID: 21300000, guid: ff60c396fad00cf4ba63c416d07cd63f, type: 3}
-  - {fileID: 21300000, guid: 30249927921c7bc4ebff16a99411781f, type: 3}
   - {fileID: 21300000, guid: e6b43677a918ca543ae5dcb2becc41e2, type: 3}
   - {fileID: 21300000, guid: 368523a7b7f5a724db2a8d16004ead76, type: 3}
   - {fileID: 21300000, guid: 9a8681d7dc59a4046b82971b1f41e87e, type: 3}
@@ -137,16 +131,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 5744610c2a321e449b0a250720de39cb, type: 3}
   - {fileID: 21300000, guid: 9991090cd5baf4343b3b755ac0931f0e, type: 3}
   - {fileID: 21300000, guid: b5fa756cfd8bb1446bd724d44df20eac, type: 3}
-  - {fileID: 21300000, guid: a9fbed6ca3d9e7541b9770a0b31df1c3, type: 3}
   - {fileID: 21300000, guid: fac81f8ce8583c949ba061579773d8c1, type: 3}
   - {fileID: 21300000, guid: 93dd078da2bd244469adb82faf2afb35, type: 3}
-  - {fileID: 21300000, guid: 5835569d22a980140962de97248fea39, type: 3}
   - {fileID: 21300000, guid: 76880fade8130124faef9fb798185ccc, type: 3}
   - {fileID: 21300000, guid: fb23c32f050fac745b2ec7edb2684211, type: 3}
   - {fileID: 21300000, guid: c589c56f3365c2841ac142fd665348eb, type: 3}
   m_PackedSpriteNamesToIndex:
   - lock
-  - Btn_circle_blue_small
   - shop
   - ActiveTab
   - bg_popup_header
@@ -170,7 +161,6 @@ SpriteAtlas:
   - Settings_Icon
   - ic_time
   - Popup_Close_Button
-  - bg_home_coin_holder
   - Btn_settings_normal
   - Btn_circle_green_small
   - Clock_Freeze
@@ -184,10 +174,8 @@ SpriteAtlas:
   - btn_toggle_on
   - profile_box_blue
   - Btn_booster_normal
-  - bg_popup_info_holder_2
   - ic_plus
   - Lego_Brickv1
-  - Clock
   - leaderboard
   - Coin_Single
   - Btn_levelBg_normal
