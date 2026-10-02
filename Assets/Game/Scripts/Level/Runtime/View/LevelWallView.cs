@@ -48,8 +48,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 if (verticalDoor != horizontalDoor)
                 {
                     var otherPart = edgePartPool.Spawn(transform);
-                    var noNeedToChangeDegree = (!horizontalNeighbour && horizontalCheck.X != verticalCheck.Y)
-                                    || (!verticalNeighbour && horizontalCheck.X == verticalCheck.Y);
+                    var noNeedToChangeDegree = (!horizontalDoor && horizontalCheck.X != verticalCheck.Y)
+                                    || (!verticalDoor && horizontalCheck.X == verticalCheck.Y);
                     LevelViewHelper.ApplyColorProperty(otherPart, color);
                     otherPart.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3((horizontalDoor ? 0.25f : 0.75f) * horizontalCheck.X, (verticalDoor ? 0.25f : 0.75f) * -verticalCheck.Y, 0f) * _cornerLength;
                     otherPart.transform.localEulerAngles = new Vector3((rotationAngle + (noNeedToChangeDegree ? 0f : 90f)) % 360f, -90f, -90f);
@@ -73,8 +73,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
             if(!crossNeighbour && 
                 (
-                (horizontalNeighbour && !verticalNeighbour && !verticalDoor) ||
-                (!horizontalNeighbour && verticalNeighbour && !horizontalDoor)
+                (horizontalNeighbour && !verticalNeighbour && (!verticalDoor || doors[cellPosition + verticalCheck].AbsorbDirection.GetDirectionVector().X == horizontalCheck.X)) ||
+                (!horizontalNeighbour && verticalNeighbour && (!horizontalDoor || doors[cellPosition + horizontalCheck].AbsorbDirection.GetDirectionVector().Y == verticalCheck.Y))
                 ))
             {
                 var createdMesh = edgePartPool.Spawn(transform);
