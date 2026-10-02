@@ -9,6 +9,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
         private static readonly int ClipLimitPropertyId = Shader.PropertyToID("_ClipLimit");
         private static MaterialPropertyBlock PropertyBlock;
 
+        public const float CellLength = 2f;
+
         public static void ApplyColorProperty(Renderer renderer, Color color)
         {
             PropertyBlock ??= new();

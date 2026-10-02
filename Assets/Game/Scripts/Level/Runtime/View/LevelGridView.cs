@@ -22,8 +22,6 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
     public class LevelGridView : MonoBehaviour, ILevelGridView
     {
-        [SerializeField] private float _cornerLength = 2f;
-
         [SerializeField] private Transform _gridParent;
         [SerializeField] private Transform _blocksParent;
         [SerializeField] private Transform _doorsParent;
@@ -94,7 +92,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var createdMesh = _gridCellPool.Spawn(_gridParent);
                 LevelViewHelper.ApplyColorProperty(createdMesh, gridColor);
                 createdMesh.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
-                createdMesh.transform.localPosition = new Vector3(cell.X, -cell.Y, 0f) * _cornerLength;
+                createdMesh.transform.localPosition = new Vector3(cell.X, -cell.Y, 0f) * LevelViewHelper.CellLength;
             }
         }
 
@@ -104,7 +102,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             {
                 var color = _colorsConfig.GetColor(block.Color);
                 var blockView = _blockViewPool.Spawn(_blocksParent);
-                blockView.transform.localPosition = new Vector3(block.GridPosition.X, -block.GridPosition.Y, 0f) * _cornerLength;
+                blockView.transform.localPosition = new Vector3(block.GridPosition.X, -block.GridPosition.Y, 0f) * LevelViewHelper.CellLength;
                 blockView.InitializeView(color, block.BlocksLocalPositions,
                     _centerPartPool, _edgePartPool, _outerCornerPartPool, _innerCornerPartPool, _colliderPool);
 

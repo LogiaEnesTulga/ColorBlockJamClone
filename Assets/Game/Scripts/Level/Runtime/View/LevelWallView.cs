@@ -9,8 +9,6 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 {
     public class LevelWallView : MonoBehaviour
     {
-        [SerializeField] private float _cornerLength = 2f;
-
         public void GenerateWalls(HashSet<int2> cellPositions, IReadOnlyDictionary<int2, LevelDoorObjectModel> doors,
             IViewPool<Renderer> edgePartPool, IViewPool<Renderer> outerCornerPartPool,
             IViewPool<Renderer> innerCornerPartPool, Color color)
@@ -43,6 +41,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             var verticalDoor = doors.ContainsKey(cellPosition + verticalCheck);
             var crossDoor = doors.ContainsKey(cellPosition + crossCheck);
 
+            var cellLength = LevelViewHelper.CellLength;
+
             if(!horizontalNeighbour && !verticalNeighbour && !crossNeighbour && !crossDoor)
             {
                 if (verticalDoor != horizontalDoor)
@@ -51,13 +51,15 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                     var noNeedToChangeDegree = (!horizontalDoor && horizontalCheck.X != verticalCheck.Y)
                                     || (!verticalDoor && horizontalCheck.X == verticalCheck.Y);
                     LevelViewHelper.ApplyColorProperty(otherPart, color);
-                    otherPart.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3((horizontalDoor ? 0.25f : 0.75f) * horizontalCheck.X, (verticalDoor ? 0.25f : 0.75f) * -verticalCheck.Y, 0f) * _cornerLength;
+                    var otherPartAdditionalPosition = new Vector3((horizontalDoor ? 0.25f : 0.75f) * horizontalCheck.X, (verticalDoor ? 0.25f : 0.75f) * -verticalCheck.Y, 0f);
+                    otherPart.transform.localPosition = (new Vector3(cellPosition.X, -cellPosition.Y, 0f) + otherPartAdditionalPosition) * cellLength;
                     otherPart.transform.localEulerAngles = new Vector3((rotationAngle + (noNeedToChangeDegree ? 0f : 90f)) % 360f, -90f, -90f);
                 }
 
                 var createdMesh = (verticalDoor || horizontalDoor ? innerCornerPartPool : outerCornerPartPool).Spawn(transform);
                 LevelViewHelper.ApplyColorProperty(createdMesh, color);
-                createdMesh.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f) * _cornerLength * 0.75f;
+                var additionalPosition = new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f) * 0.75f;
+                createdMesh.transform.localPosition = (new Vector3(cellPosition.X, -cellPosition.Y, 0f) + additionalPosition) * cellLength;
                 createdMesh.transform.localEulerAngles = new Vector3(rotationAngle, -90f, -90f);
                 return;
             }
@@ -66,7 +68,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             {
                 var createdMesh = innerCornerPartPool.Spawn(transform);
                 LevelViewHelper.ApplyColorProperty(createdMesh, color);
-                createdMesh.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f) * _cornerLength * 0.75f;
+                var additionalPosition = new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f) * 0.75f;
+                createdMesh.transform.localPosition = (new Vector3(cellPosition.X, -cellPosition.Y, 0f) + additionalPosition) * cellLength;
                 createdMesh.transform.localEulerAngles = new Vector3((rotationAngle + 180f) % 360f, -90f, -90f);
                 return;
             }
@@ -81,7 +84,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var noNeedToChangeDegree = (!horizontalNeighbour && horizontalCheck.X != verticalCheck.Y)
                                 || (!verticalNeighbour && horizontalCheck.X == verticalCheck.Y);
                 LevelViewHelper.ApplyColorProperty(createdMesh, color);
-                createdMesh.transform.localPosition = new Vector3(cellPosition.X, -cellPosition.Y, 0f) * _cornerLength + new Vector3((horizontalNeighbour ? 0.25f : 0.75f) * horizontalCheck.X, (verticalNeighbour ? 0.25f : 0.75f) * -verticalCheck.Y, 0f) * _cornerLength;
+                var additionalPosition = new Vector3((horizontalNeighbour ? 0.25f : 0.75f) * horizontalCheck.X, (verticalNeighbour ? 0.25f : 0.75f) * -verticalCheck.Y, 0f);
+                createdMesh.transform.localPosition = (new Vector3(cellPosition.X, -cellPosition.Y, 0f) + additionalPosition) * cellLength;
                 createdMesh.transform.localEulerAngles = new Vector3((rotationAngle + (noNeedToChangeDegree ? 0f : 90f)) % 360f, -90f, -90f);
                 return;
             }

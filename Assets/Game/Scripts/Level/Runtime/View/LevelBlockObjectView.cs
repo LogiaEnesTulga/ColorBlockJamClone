@@ -13,9 +13,8 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
     {
         private const float MoveDuration = 0.05f;
         private const float AbsorbingDuration = 1f;
-        private const float BlockedDragLimit = 0.15f;
+        private const float BlockedDragLimit = LevelViewHelper.CellLength * 0.05f;
 
-        [SerializeField] private float _cornerLength = 2f;
         [SerializeField] private Material _defaultMaterial;
         [SerializeField] private Material _clippingMaterial;
 
@@ -39,7 +38,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             {
                 var localPosition = localPositions[i];
                 var createdMesh = colliderPool.Spawn(transform);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
+                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * LevelViewHelper.CellLength;
                 _colliderObjects.Add(createdMesh);
 
                 InitializeCornerOfPoint(localPositions, i, int2.Left, int2.Up, 90f,
@@ -64,6 +63,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             var secondNeighbour = false;
             var crossNeighbour = false;
             var crossCheck = new int2(horizontalCheck.X, verticalCheck.Y);
+            var cellLength = LevelViewHelper.CellLength;
 
             for(var i = 0; i < localPositions.Count; i++)
             {
@@ -96,7 +96,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var createdMesh = centerPartPool.Spawn(transform);
                 _blockRenderers.Add(createdMesh);
                 LevelViewHelper.ApplyColorProperty(createdMesh, _color);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
+                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * cellLength;
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
             else if(crossNeighbour)
@@ -108,39 +108,32 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var createdMesh = innerCornerPartPool.Spawn(transform);
                 _blockRenderers.Add(createdMesh);
                 LevelViewHelper.ApplyColorProperty(createdMesh, _color);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f);
+                var additionalPosition = new Vector3(horizontalCheck.X, -verticalCheck.Y, 0f) * 0.5f;
+                createdMesh.transform.localPosition = (new Vector3(localPosition.X, -localPosition.Y, 0f) + additionalPosition) * cellLength;
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
             else if(horizontalNeighbour)
             {
-                var additionalAngle = 0f;
-                var additionalPosition = int2.Zero;
-                if(crossCheck.X == crossCheck.Y)
-                {
-                    additionalAngle = -90f;
-                    additionalPosition = new int2(crossCheck.X, 0);
-                }
+                var topLeftOrBottomRight = crossCheck.X == crossCheck.Y;
+                var additionalAngle = topLeftOrBottomRight ? -90f : 0f;
+                var additionalPosition = topLeftOrBottomRight ? new Vector3(crossCheck.X * 0.5f, 0f, 0f) : Vector3.zero;
 
                 var createdMesh = edgePartPool.Spawn(transform);
                 _blockRenderers.Add(createdMesh);
                 LevelViewHelper.ApplyColorProperty(createdMesh, _color);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(additionalPosition.X, additionalPosition.Y, 0f);
+                createdMesh.transform.localPosition = (new Vector3(localPosition.X, -localPosition.Y, 0f) + additionalPosition) * cellLength;
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle + additionalAngle);
             }
             else if(secondNeighbour)
             {
-                var additionalAngle = 0f;
-                var additionalPosition = int2.Zero;
-                if(crossCheck.X != crossCheck.Y)
-                {
-                    additionalAngle = -90f;
-                    additionalPosition = new int2(0, -crossCheck.Y);
-                }
+                var topRightOrBottomLeft = crossCheck.X != crossCheck.Y;
+                var additionalAngle = topRightOrBottomLeft ? -90f : 0f;
+                var additionalPosition = topRightOrBottomLeft ? new Vector3(0f, -crossCheck.Y * 0.5f, 0f) : Vector3.zero;
 
                 var createdMesh = edgePartPool.Spawn(transform);
                 _blockRenderers.Add(createdMesh);
                 LevelViewHelper.ApplyColorProperty(createdMesh, _color);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength + new Vector3(additionalPosition.X, additionalPosition.Y, 0f);
+                createdMesh.transform.localPosition = (new Vector3(localPosition.X, -localPosition.Y, 0f) + additionalPosition) * cellLength;
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle + additionalAngle);
             }
             else
@@ -148,7 +141,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 var createdMesh = outerCornerPartPool.Spawn(transform);
                 _blockRenderers.Add(createdMesh);
                 LevelViewHelper.ApplyColorProperty(createdMesh, _color);
-                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * _cornerLength;
+                createdMesh.transform.localPosition = new Vector3(localPosition.X, -localPosition.Y, 0f) * cellLength;
                 createdMesh.transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
         }
@@ -170,7 +163,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
         public void MoveToPoint(int2 newPoint)
         {
-            _targetPosition = new Vector3(newPoint.X, -newPoint.Y, 0f) * _cornerLength;
+            _targetPosition = new Vector3(newPoint.X, -newPoint.Y, 0f) * LevelViewHelper.CellLength;
 
             // While dragging, DragByWorldDelta positions the block every frame.
             if(_dragOrigin.HasValue) return;
@@ -197,7 +190,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
                 LevelViewHelper.ApplyClipProperties(renderer, new Vector2(directionVector.X, -directionVector.Y), clippingLimit);
             }
 
-            _moveTween = transform.DOLocalMove(new Vector3(lastPoint.X - directionVector.X * 0.5f, -lastPoint.Y + directionVector.Y * 0.5f, 0f) * _cornerLength, AbsorbingDuration);
+            _moveTween = transform.DOLocalMove(new Vector3(lastPoint.X - directionVector.X * 0.5f, -lastPoint.Y + directionVector.Y * 0.5f, 0f) * LevelViewHelper.CellLength, AbsorbingDuration);
             await _moveTween.AsyncWaitForCompletion();
 
             if(cancellationToken.IsCancellationRequested) return;
@@ -218,8 +211,9 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
 
             var desired = _dragOrigin.Value + transform.parent.InverseTransformVector(worldDelta);
             var offset = desired - _targetPosition;
-            offset.x = Mathf.Clamp(offset.x, canMoveLeft ? -_cornerLength : -BlockedDragLimit, canMoveRight ? _cornerLength : BlockedDragLimit);
-            offset.y = Mathf.Clamp(offset.y, canMoveDown ? -_cornerLength : -BlockedDragLimit, canMoveUp ? _cornerLength : BlockedDragLimit);
+            var cellLength = LevelViewHelper.CellLength;
+            offset.x = Mathf.Clamp(offset.x, canMoveLeft ? -cellLength : -BlockedDragLimit, canMoveRight ? cellLength : BlockedDragLimit);
+            offset.y = Mathf.Clamp(offset.y, canMoveDown ? -cellLength : -BlockedDragLimit, canMoveUp ? cellLength : BlockedDragLimit);
 
             transform.localPosition = _targetPosition + new Vector3(offset.x, offset.y, 0f);
         }
