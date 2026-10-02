@@ -32,7 +32,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             _dismissButton.onClick.AddListener(OnDismissButtonClick);
             _onDismissButtonClicked += viewData.OnDismissButtonClicked;
 
-            _nextLevelButton.onClick.AddListener(OnRetryButtonClick);
+            _nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
             _onNextLevelButtonClicked += viewData.OnNextLevelButtonClicked;
         }
 
@@ -47,7 +47,7 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.View
             _onDismissButtonClicked?.Invoke();
         }
 
-        private void OnRetryButtonClick()
+        private void OnNextLevelButtonClick()
         {
             _onNextLevelButtonClicked?.Invoke();
         }
