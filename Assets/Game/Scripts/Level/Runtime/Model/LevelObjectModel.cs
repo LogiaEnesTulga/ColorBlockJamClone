@@ -5,8 +5,6 @@ namespace RollicGames.ColorBlockJamClone.Level.Runtime.Model
 {
     public class LevelObjectModel : IPoolObject
     {
-        public static readonly LevelObjectModel EmptySpace = new();
-
         public virtual LevelObjectType ObjectType => LevelObjectType.None;
 
         public int Id => _id;
